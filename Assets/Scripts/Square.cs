@@ -1,8 +1,8 @@
-public class Tile
+public class Square
 {
     public string Name {get;}
 
-    public Tile(string name)
+    public Square(string name)
     {
         Name = name;
     }

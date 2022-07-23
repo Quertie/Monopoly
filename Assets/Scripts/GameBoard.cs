@@ -4,7 +4,7 @@ using System.Linq;
 
 public class GameBoard
 {
-    public List<Tile> Tiles {get; }
+    public List<Square> Squares {get; }
 
     private List<string> Names = new List<string> {
                 "Go",
@@ -50,6 +50,6 @@ public class GameBoard
 
     public GameBoard()
     {
-        Tiles = Names.Select(n => new Tile(n)).ToList();
+        Squares = Names.Select(n => new Square(n)).ToList();
     }
 }

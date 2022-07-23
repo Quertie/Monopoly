@@ -10,13 +10,13 @@ public class GameController : MonoBehaviour
     void Start()
     {
         GameBoard = new GameBoard();
-        print(string.Join(" - ", GameBoard.Tiles.Select(t => t.Name).ToArray()));
         BuildBoard(GameBoard);
     }
 
     public void BuildBoard(GameBoard gameBoard)
     {
-        
+        var boardBuilder = new BoardBuilder(GameBoard, new SquareImageGenerator());
+        boardBuilder.BuildBoard();
     }
 
     void Update()
