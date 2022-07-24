@@ -9,10 +9,10 @@ public class BorderOtherSquareImageGenerator : BorderSquareImageGeneratorBase
     {
         var bitmap = new Bitmap(100, 100);
         using (Graphics gfx = Graphics.FromImage(bitmap))
-        using (SolidBrush brush = new SolidBrush(MonopolyClassicColorTheme.LightGreen))
+        using (SolidBrush brush = new SolidBrush(MonopolyClassicTheme.LightGreen))
         {
             gfx.FillRectangle(brush, 0, 0, 100, 100);
-            Pen blackBorderPen = new Pen(MonopolyClassicColorTheme.Black, 1);
+            Pen blackBorderPen = new Pen(MonopolyClassicTheme.Black, 1);
             gfx.DrawRectangle(blackBorderPen, 0, 0, 100, 100);
         }
         return bitmap;

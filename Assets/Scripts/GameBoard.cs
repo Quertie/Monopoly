@@ -6,14 +6,14 @@ using System.Drawing;
 public class GameBoard
 {
 
-    private ColorGroup _brownColorGroup = new ColorGroup(MonopolyClassicColorTheme.BrownGroupColor);
-    private ColorGroup _lightBlueColorGroup = new ColorGroup(MonopolyClassicColorTheme.LightBlueGroupColor);
-    private ColorGroup _violetColorGroup = new ColorGroup(MonopolyClassicColorTheme.VioletGroupColor);
-    private ColorGroup _orangeColorGroup = new ColorGroup(MonopolyClassicColorTheme.OrangeGroupColor);
-    private ColorGroup _redColorGroup = new ColorGroup(MonopolyClassicColorTheme.RedGroupColor);
-    private ColorGroup _yellowColorGroup = new ColorGroup(MonopolyClassicColorTheme.YellowGroupColor);
-    private ColorGroup _greenColorGroup = new ColorGroup(MonopolyClassicColorTheme.GreenGroupColor);
-    private ColorGroup _darkBlueColorGroup = new ColorGroup(MonopolyClassicColorTheme.DarkBlueGroupColor);
+    private ColorGroup _brownColorGroup = new ColorGroup(MonopolyClassicTheme.BrownGroupColor);
+    private ColorGroup _lightBlueColorGroup = new ColorGroup(MonopolyClassicTheme.LightBlueGroupColor);
+    private ColorGroup _violetColorGroup = new ColorGroup(MonopolyClassicTheme.VioletGroupColor);
+    private ColorGroup _orangeColorGroup = new ColorGroup(MonopolyClassicTheme.OrangeGroupColor);
+    private ColorGroup _redColorGroup = new ColorGroup(MonopolyClassicTheme.RedGroupColor);
+    private ColorGroup _yellowColorGroup = new ColorGroup(MonopolyClassicTheme.YellowGroupColor);
+    private ColorGroup _greenColorGroup = new ColorGroup(MonopolyClassicTheme.GreenGroupColor);
+    private ColorGroup _darkBlueColorGroup = new ColorGroup(MonopolyClassicTheme.DarkBlueGroupColor);
 
     public List<ColorGroup> ColorGroups {
         get
