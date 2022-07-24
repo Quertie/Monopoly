@@ -30,13 +30,23 @@ public class SquareGameObjectGeneratorFactory
         }
     }
 
-    private ISquareImageGenerator _borderSquareImageGeneratorValue;
-    private ISquareImageGenerator _borderSquareImageGenerator
+    private ISquareImageGenerator _borderOtherSquareImageGeneratorValue;
+    private ISquareImageGenerator _borderOtherSquareImageGenerator
     {
         get{
-            if (_borderSquareImageGeneratorValue == null)
-                _borderSquareImageGeneratorValue = new BorderSquareImageGenerator();
-            return _borderSquareImageGeneratorValue;
+            if (_borderOtherSquareImageGeneratorValue == null)
+                _borderOtherSquareImageGeneratorValue = new BorderOtherSquareImageGenerator(_squareHeight, _squareWidth);
+            return _borderOtherSquareImageGeneratorValue;
+        }
+    }
+    
+    private ISquareImageGenerator _borderPropertySquareImageGeneratorValue;
+    private ISquareImageGenerator _borderPropertySquareImageGenerator
+    {
+        get{
+            if (_borderPropertySquareImageGeneratorValue == null)
+                _borderPropertySquareImageGeneratorValue = new BorderPropertySquareImageGenerator(_squareHeight, _squareWidth);
+            return _borderPropertySquareImageGeneratorValue;
         }
     }
 
@@ -71,7 +81,9 @@ public class SquareGameObjectGeneratorFactory
 
     private ISquareImageGenerator GetSquareImageGenerator(Square square)
     {
-        return SquareIsCorner(square, _gameBoard) ? (ISquareImageGenerator)_cornerSquareImageGenerator : (ISquareImageGenerator)_borderSquareImageGenerator;
+        if (SquareIsCorner(square, _gameBoard)) return _cornerSquareImageGenerator;
+        if (square is Property) return _borderPropertySquareImageGenerator;
+        return _borderOtherSquareImageGenerator;
     }
 
     private bool SquareIsCorner(Square square, GameBoard gameBoard)
