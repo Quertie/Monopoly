@@ -52,4 +52,9 @@ public class GameBoard
     {
         Squares = Names.Select(n => new Square(n)).ToList();
     }
+
+    public int GetSquareIndex(Square square)
+    {
+        return Squares.IndexOf(square);
+    }
 }

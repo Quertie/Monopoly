@@ -2,22 +2,23 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Linq;
+using System.IO;
 
 public class BoardBuilder
 {
 
-    private const float squareSize = 1f;
+    private const float squareWidth = 4f;
+    private const float squareHeight = 6.5f;
 
-    private Bitmap firstSquareImage {get;set;}
-
-    private SquareImageGenerator _squareImageGenerator;
     private GameBoard _gameBoard;
+    private readonly SquareGameObjectGeneratorFactory _squareGameObjectGeneratorFactory;
 
-    public BoardBuilder(GameBoard gameBoard, SquareImageGenerator squareImageGenerator)
+    public BoardBuilder(GameBoard gameBoard, SquareGameObjectGeneratorFactory squareGameObjectGeneratorFactory)
     {
         _gameBoard = gameBoard;
-        _squareImageGenerator = squareImageGenerator;
+        _squareGameObjectGeneratorFactory = squareGameObjectGeneratorFactory;
     }
 
     public void BuildBoard()
@@ -26,80 +27,64 @@ public class BoardBuilder
         for (int i = 0; i < totalSquares; i++)
         {
             var square = _gameBoard.Squares[i];
-            var squareGameObject = CreateSquare(square);
+            var gameObjectGenerator = _squareGameObjectGeneratorFactory.GetGameObjectGenerator(square);
+            var squareGameObject = gameObjectGenerator.CreateGameObject(square);
             MoveSquareToPosition(squareGameObject, i);
         }
-    }
-
-    private GameObject CreateSquare(Square square)
-    {
-        firstSquareImage = _squareImageGenerator.GetImage(square);
-        var texture = TextureFromBitmap(firstSquareImage);
-
-        var squareObject = CreateSquareGameObject();
-        squareObject.GetComponent<Renderer>().material.mainTexture = texture;
-        return squareObject;
-    }
-
-    private Texture2D TextureFromBitmap(Bitmap bmp)
-    {
-        var units = GraphicsUnit.Point;
-        var bounds = bmp.GetBounds(ref units);
-        var texture = new Texture2D((int)bounds.X, (int)bounds.Y);
-        for (int x = 0; x < bounds.X; x++)
-        {
-            for (int y = 0; y < bounds.Y; y++)
-            {
-                var color = bmp.GetPixel(x,y);
-                var unityColor = new UnityEngine.Color(color.R, color.G, color.B);
-                texture.SetPixel(x, y, unityColor);
-            }
-        }
-        return texture;
-    }
-
-    private GameObject CreateSquareGameObject()
-    {
-        var mesh = new Mesh();
-        mesh.name = "Square_Mesh";
-        mesh.vertices = new [] {
-            new Vector3(-squareSize/2, 0f,-squareSize/2),
-            new Vector3(squareSize/2, 0f,-squareSize/2),
-            new Vector3(squareSize/2, 0f, squareSize/2),
-            new Vector3(-squareSize/2, 0f, squareSize/2)
-        };
-        mesh.uv = new[] {new Vector2(0,0), new Vector2(0,1), new Vector2(1,1), new Vector2(1,0)};
-        mesh.triangles = new[] {0, 2, 1, 0, 3, 2};
-        mesh.RecalculateNormals();
-        var gameObject = new GameObject("Square", typeof(MeshRenderer), typeof(MeshFilter), typeof(MeshCollider));
-        gameObject.GetComponent<MeshFilter>().mesh = mesh;
-        return gameObject;
     }
 
     private void MoveSquareToPosition(GameObject squareGameObject, int i)
     {
         var totalSquares = _gameBoard.Squares.Count();
-        float x,z;
+        float x,z,r;
+        if (i == 0)
+        {
+            //For some reason, setting x and z to zero offsets the square. This works.
+            return;
+        }
         if (i < totalSquares/4)
         {
-            x = -squareSize * i;
-            z = 0;
+            x = -squareHeight/2 - squareWidth * (0.5f + i-1);
+            z = 0f;
+            r = 0f;
         }
-        else if (i < totalSquares / 2)
+        else if (i == totalSquares/4)
         {
-            x = -squareSize * totalSquares/4;
-            z = squareSize * (i%(totalSquares/4));
+            x = -squareWidth * (totalSquares/4 - 1) - squareHeight;
+            z = 0f;
+            r = 90f;
+        }
+        else if (i < totalSquares/2)
+        {
+            x = -squareWidth * (totalSquares/4 - 1) - squareHeight;
+            z = squareHeight/2 + squareWidth * (0.5f + i%(totalSquares/4)-1);
+            r = 90f;
+        }
+        else if (i == totalSquares/2)
+        {
+            x = -squareWidth * (totalSquares/4 - 1) - squareHeight;
+            z = squareWidth * (totalSquares/4 - 1) + squareHeight;
+            r = 180f;
         }
         else if (i < 3*totalSquares/4)
         {
-            x = -squareSize * (totalSquares/4 - (i%(totalSquares/2)));
-            z = squareSize * totalSquares/4;
+            x = -squareWidth * (totalSquares/4 - 1) - squareHeight + squareHeight/2 + squareWidth * (0.5f + i%(totalSquares/4)-1);
+            z = squareWidth * (totalSquares/4 - 1) + squareHeight;
+            r = 180f;
+        }
+        else if (i == 3*totalSquares/4)
+        {
+            x = 0f;
+            z = squareWidth * (totalSquares/4 - 1) + squareHeight;
+            r = 270f;
         }
         else
         {
-            x = 0;
-            z = squareSize * (totalSquares/4 - (i%(3 * totalSquares/4)));
+            x = 0f;
+            z = squareWidth * (totalSquares/4 - 1) + squareHeight - squareHeight/2 - squareWidth * (0.5f +i%(totalSquares/4)-1);
+            r = 270f;
         }
         squareGameObject.transform.Translate(x, 0f, z);
+        squareGameObject.transform.Rotate(0f, r, 0f);
     }
 }
