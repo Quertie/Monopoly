@@ -20,10 +20,9 @@ public static class MonopolyClassicTheme
         get
         {
             var fontPath = Path.Combine(Application.streamingAssetsPath, "futura medium bt.ttf").Replace('/', '\\');
-            Debug.Log(fontPath);
             var collection = new PrivateFontCollection();
             collection.AddFontFile(fontPath);
             return new FontFamily(collection.Families[0].Name, collection);
         }
-    } 
+    }
 }

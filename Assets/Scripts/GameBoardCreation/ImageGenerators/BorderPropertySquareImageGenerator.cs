@@ -6,6 +6,8 @@ public class BorderPropertySquareImageGenerator : BorderSquareImageGeneratorBase
 {
     private const int SmallestSide = 500;
     private const int PropertyNameFontSize = 40;
+    private const int PropertyPriceFontSize = 38;
+    private const int borderThickness = 16;
 
     public BorderPropertySquareImageGenerator(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
     {
@@ -26,19 +28,25 @@ public class BorderPropertySquareImageGenerator : BorderSquareImageGeneratorBase
         using (var propertyColorBrush = new SolidBrush(property.ColorGroup.Color))
         {
             gfx.FillRectangle(greenBrush, 0, 0, width, height);
-            Pen blackBorderPen = new Pen(MonopolyClassicTheme.Black, 5);
-            gfx.DrawRectangle(blackBorderPen, 0, 0, width, height);
+            Pen blackBorderPen = new Pen(MonopolyClassicTheme.Black, borderThickness);
+            //Offset is necessary otherwise to correct some border problems
+            gfx.DrawRectangle(blackBorderPen, 0, borderThickness/2, width, height-borderThickness/2);
 
             gfx.FillRectangle(propertyColorBrush, 0, 0, width, height/5);
-            gfx.DrawRectangle(blackBorderPen, 0, 0, width, height/5);
+            gfx.DrawRectangle(blackBorderPen, 0, borderThickness/2, width, height/5);
 
-            var nameBox = new RectangleF(.02f*width, height*.3f, width*.96f, height*.2f);
             var stringFormat = new StringFormat();
             stringFormat.Alignment = StringAlignment.Center;
             gfx.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-            gfx.DrawString(square.Name.ToUpper(), new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, PropertyNameFontSize), blackBrush, nameBox, stringFormat);
+            var textBoxMargin = (int)(width*0.02);
+            var textBoxWidth = (int)(width-textBoxMargin*2);
+
+            var nameBox = new RectangleF(textBoxMargin, height*.3f, textBoxWidth, height*.2f);
+            gfx.DrawString(property.Name.ToUpper(), new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, PropertyNameFontSize), blackBrush, nameBox, stringFormat);
+
+            var priceBox = new RectangleF(textBoxMargin, height*.85f, textBoxWidth, height*.2f);
+            gfx.DrawString($"M{property.Price.ToString()}", new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, PropertyPriceFontSize), blackBrush, priceBox, stringFormat);
         }
-        bitmap.Save("square.bmp");
         return bitmap;
     }
 
