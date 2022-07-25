@@ -1,5 +1,7 @@
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
+using UnityEngine;
 
 public abstract class BorderSquareImageGeneratorBase : ISquareImageGenerator
 {
@@ -54,6 +56,21 @@ public abstract class BorderSquareImageGeneratorBase : ISquareImageGenerator
             var textBoxWidth = (int)(width-textBoxMargin*2);
             var textBox = new RectangleF(textBoxMargin, height*heightPercent, textBoxWidth, height*.2f);
             gfx.DrawString(text, new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, fontSize), blackBrush, textBox, stringFormat);
+        }
+    }
+
+    protected void DrawImageToImage(Bitmap bitmap, string imageAssetPath, float imageMarginPct, float imageVerticalPositionPct)
+    {
+        var (height, width) = GetImageSize();
+
+        using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
+        using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
+        {
+            var trainImage = new Bitmap(Path.Combine(Application.streamingAssetsPath, imageAssetPath).Replace("/", "\\"));
+            var imageMargin = (int)(width * imageMarginPct);
+            var imageWidth = (int)(width - imageMargin * 2);
+            var imageHeight = (int)((float)trainImage.Height / trainImage.Width * imageWidth);
+            gfx.DrawImage(trainImage, imageMargin, height * imageVerticalPositionPct, imageWidth, imageHeight);
         }
     }
 }

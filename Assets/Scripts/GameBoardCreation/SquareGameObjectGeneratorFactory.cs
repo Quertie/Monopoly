@@ -60,6 +60,16 @@ public class SquareGameObjectGeneratorFactory
         }
     }
 
+    private ISquareImageGenerator _borderChanceImageGeneratorValue;
+    private ISquareImageGenerator _borderChanceImageGenerator
+    {
+        get{
+            if (_borderChanceImageGeneratorValue == null)
+                _borderChanceImageGeneratorValue = new BorderChanceImageGenerator(_squareHeight, _squareWidth);
+            return _borderChanceImageGeneratorValue;
+        }
+    }
+
     private ISquareImageGenerator _cornerSquareImageGeneratorValue;
     private ISquareImageGenerator _cornerSquareImageGenerator
     {
@@ -94,6 +104,7 @@ public class SquareGameObjectGeneratorFactory
         if (SquareIsCorner(square, _gameBoard)) return _cornerSquareImageGenerator;
         if (square is Property) return _borderPropertySquareImageGenerator;
         if (square is TrainStation) return _borderTrainStationImageGenerator;
+        if (square is Chance) return _borderChanceImageGenerator;
         return _borderOtherSquareImageGenerator;
     }
 
