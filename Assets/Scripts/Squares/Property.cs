@@ -1,13 +1,9 @@
-public class Property:Square
+public class Property: Deed
 {
-    public ColorGroup ColorGroup {get;}
-
-    public int Price {get;}
-
-    public Property(string name, ColorGroup colorGroup, int price):base(name)
+    public ColorGroup ColorGroup;
+    public Property(string name, ColorGroup colorGroup, int price):base(name, price)
     {
         ColorGroup = colorGroup;
         ColorGroup.AddProperty(this);
-        Price = price;
     }
 }
