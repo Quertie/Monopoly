@@ -11,9 +11,9 @@ public class BorderChanceImageGenerator:BorderSquareImageGeneratorBase
 
     private Dictionary<int, string> occurenceToFileName = new Dictionary<int, string> ()
     {
-        {0, "chance-orange.png"},
-        {1, "chance-violet.png"},
-        {2, "chance-blue.png"}
+        {0, "chance-violet.png"},
+        {1, "chance-blue.png"},
+        {2, "chance-orange.png"}
     };
     
     public BorderChanceImageGenerator(float _squareHeight, float _squareWidth):base(_squareHeight, _squareWidth)
