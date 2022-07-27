@@ -100,6 +100,26 @@ public class SquareGameObjectGeneratorFactory
         }
     }
 
+    private ISquareImageGenerator _borderIncomeTaxImageGeneratorValue;
+    private ISquareImageGenerator _borderIncomeTaxImageGenerator
+    {
+        get{
+            if (_borderIncomeTaxImageGeneratorValue == null)
+                _borderIncomeTaxImageGeneratorValue = new BorderIncomeTaxImageGenerator(_squareHeight, _squareWidth);
+            return _borderIncomeTaxImageGeneratorValue;
+        }
+    }
+
+    private ISquareImageGenerator _borderLuxuryTaxImageGeneratorValue;
+    private ISquareImageGenerator _borderLuxuryTaxImageGenerator
+    {
+        get{
+            if (_borderLuxuryTaxImageGeneratorValue == null)
+                _borderLuxuryTaxImageGeneratorValue = new BorderLuxuryTaxImageGenerator(_squareHeight, _squareWidth);
+            return _borderLuxuryTaxImageGeneratorValue;
+        }
+    }
+
     private ISquareImageGenerator _cornerSquareImageGeneratorValue;
     private ISquareImageGenerator _cornerSquareImageGenerator
     {
@@ -138,6 +158,8 @@ public class SquareGameObjectGeneratorFactory
         if (square is CommunityChest) return _borderCommunityChestImageGenerator;
         if (square is ElectricCompany) return _borderElectricCompanyImageGenerator;
         if (square is WaterWorks) return _borderWaterWorksImageGenerator;
+        if (square is IncomeTax) return _borderIncomeTaxImageGenerator;
+        if (square is LuxuryTax) return _borderLuxuryTaxImageGenerator;
         return _borderOtherSquareImageGenerator;
     }
 

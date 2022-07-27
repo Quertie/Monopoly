@@ -6,12 +6,8 @@ public abstract class BorderDeedSquareImageGenerator:BorderSquareImageGeneratorB
     {
     }
 
-    private const int PropertyPriceFontSize = 38;
-
     protected void DrawPriceToImage(Bitmap bitmap, Deed deed)
     {
-        var (height, width) = GetImageSize();
-
-        DrawTextToImage(bitmap, $"M{deed.Price}", .85f, PropertyPriceFontSize);
+        DrawTextToBottomOfImage(bitmap, $"M{deed.Price}");
     }
 }

@@ -38,7 +38,7 @@ public class GameBoard : IGameBoard
             new Property("Boulevard de Belleville", _brownColorGroup, 60),
             new CommunityChest("Caisse de communauté"),
             new Property("Rue Lecourbe", _brownColorGroup, 60),
-            new CommunityChestSquare("Impôts sur le revenu"),
+            new IncomeTax("Impôts sur le revenu", 200),
             new TrainStation("Gare Montparnasse", 200),
             new Property("Rue de Vaugirard", _lightBlueColorGroup, 100),
             new Chance("Chance"),
@@ -72,7 +72,7 @@ public class GameBoard : IGameBoard
             new TrainStation("Gare Saint-Lazare", 200),
             new Chance("Chance"),
             new Property("Avenue des Champs-Elysées", _darkBlueColorGroup, 350),
-            new CommunityChestSquare("Taxe de luxe"),
+            new LuxuryTax("Taxe de luxe", 100),
             new Property("Rue de la Paix", _darkBlueColorGroup, 400)
         };
     }

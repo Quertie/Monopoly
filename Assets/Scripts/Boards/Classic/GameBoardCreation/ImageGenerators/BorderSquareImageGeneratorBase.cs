@@ -10,6 +10,7 @@ public abstract class BorderSquareImageGeneratorBase : ISquareImageGenerator
 
     protected const int borderThickness = 16;
     private const int SmallestSide = 500;
+    private const int SmallFontSize = 38;
 
     protected BorderSquareImageGeneratorBase(float squareHeight, float squareWidth)
     {
@@ -57,6 +58,11 @@ public abstract class BorderSquareImageGeneratorBase : ISquareImageGenerator
             var textBox = new RectangleF(textBoxMargin, height*heightPercent, textBoxWidth, height*.3f);
             gfx.DrawString(text, new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, fontSize), blackBrush, textBox, stringFormat);
         }
+    }
+
+    public void DrawTextToBottomOfImage(Bitmap bitmap, string text)
+    {
+        DrawTextToImage(bitmap, text, .85f, SmallFontSize);
     }
 
     protected void DrawImageToImage(Bitmap bitmap, string imageAssetPath, float imageMarginPct, float imageVerticalPositionPct)
