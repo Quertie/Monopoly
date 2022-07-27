@@ -14,7 +14,7 @@ public class BorderCommunityChestImageGenerator:BorderSquareImageGeneratorBase
         var bitmap = InitImageWithBackground();
 
         DrawTextToImage(bitmap, square.Name.ToUpper(), .08f, CommunityChestNameFontSize);
-        DrawImageToImage(bitmap, Path.Combine("Images", "community-chest.png"), .1f, .45f);
+        DrawImageToImage(bitmap, Path.Combine("Classic", "Images", "community-chest.png"), .1f, .45f);
         return bitmap;
     }
 }

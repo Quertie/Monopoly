@@ -19,7 +19,7 @@ public static class MonopolyClassicTheme
     public static FontFamily DeedNameFontFamily{
         get
         {
-            var fontPath = Path.Combine(Application.streamingAssetsPath, "Fonts", "futura medium bt.ttf").Replace('/', '\\');
+            var fontPath = Path.Combine(Application.streamingAssetsPath, "Classic", "Fonts", "futura medium bt.ttf").Replace('/', '\\');
             var collection = new PrivateFontCollection();
             collection.AddFontFile(fontPath);
             return new FontFamily(collection.Families[0].Name, collection);

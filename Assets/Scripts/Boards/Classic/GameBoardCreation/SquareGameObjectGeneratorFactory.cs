@@ -80,6 +80,26 @@ public class SquareGameObjectGeneratorFactory
         }
     }
 
+    private ISquareImageGenerator _borderElectricCompanyImageGeneratorValue;
+    private ISquareImageGenerator _borderElectricCompanyImageGenerator
+    {
+        get{
+            if (_borderElectricCompanyImageGeneratorValue == null)
+                _borderElectricCompanyImageGeneratorValue = new BorderElectricCompanyImageGenerator(_squareHeight, _squareWidth);
+            return _borderElectricCompanyImageGeneratorValue;
+        }
+    }
+
+    private ISquareImageGenerator _borderWaterWorksImageGeneratorValue;
+    private ISquareImageGenerator _borderWaterWorksImageGenerator
+    {
+        get{
+            if (_borderWaterWorksImageGeneratorValue == null)
+                _borderWaterWorksImageGeneratorValue = new BorderWaterWorksImageGenerator(_squareHeight, _squareWidth);
+            return _borderWaterWorksImageGeneratorValue;
+        }
+    }
+
     private ISquareImageGenerator _cornerSquareImageGeneratorValue;
     private ISquareImageGenerator _cornerSquareImageGenerator
     {
@@ -116,6 +136,8 @@ public class SquareGameObjectGeneratorFactory
         if (square is TrainStation) return _borderTrainStationImageGenerator;
         if (square is Chance) return _borderChanceImageGenerator;
         if (square is CommunityChest) return _borderCommunityChestImageGenerator;
+        if (square is ElectricCompany) return _borderElectricCompanyImageGenerator;
+        if (square is WaterWorks) return _borderWaterWorksImageGenerator;
         return _borderOtherSquareImageGenerator;
     }
 

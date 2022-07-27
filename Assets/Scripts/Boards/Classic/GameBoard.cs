@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
 
-public class GameBoard
+public class GameBoard : IGameBoard
 {
 
     private ColorGroup _brownColorGroup = new ColorGroup(MonopolyClassicTheme.BrownGroupColor);
@@ -15,21 +15,16 @@ public class GameBoard
     private ColorGroup _greenColorGroup = new ColorGroup(MonopolyClassicTheme.GreenGroupColor);
     private ColorGroup _darkBlueColorGroup = new ColorGroup(MonopolyClassicTheme.DarkBlueGroupColor);
 
-    public List<ColorGroup> ColorGroups {
+    public List<ColorGroup> ColorGroups
+    {
         get
         {
-            
-            return new List<ColorGroup>() {_brownColorGroup, _lightBlueColorGroup, _violetColorGroup, _orangeColorGroup, _redColorGroup, _yellowColorGroup, _greenColorGroup, _darkBlueColorGroup};
+
+            return new List<ColorGroup>() { _brownColorGroup, _lightBlueColorGroup, _violetColorGroup, _orangeColorGroup, _redColorGroup, _yellowColorGroup, _greenColorGroup, _darkBlueColorGroup };
         }
     }
 
     public List<Square> Squares {get;}
-
-    public int GetSquareIndex(Square square)
-    {
-        return Squares.IndexOf(square);
-    }
-
 
     public GameBoard()
     {
@@ -51,7 +46,7 @@ public class GameBoard
             new Property("Avenue de la République", _lightBlueColorGroup, 120),
             new CommunityChestSquare("Prison"),
             new Property("Boulevard de la Villette", _violetColorGroup, 140),
-            new CommunityChestSquare("Compagnie de distribution d'électricité"),
+            new ElectricCompany("Compagnie de distribution d'électricité", 150),
             new Property("Avenue de Neuilly", _violetColorGroup, 140),
             new Property("Rue de Paradis", _violetColorGroup, 160),
             new TrainStation("Gare de Lyon", 200),
@@ -67,7 +62,7 @@ public class GameBoard
             new TrainStation("Gare du Nord", 200),
             new Property("Faubourg Saint-Honoré", _yellowColorGroup, 260),
             new Property("Place de la Bourse", _yellowColorGroup, 260),
-            new CommunityChestSquare("Compagnie de distribution des eaux"),
+            new WaterWorks("Compagnie de distribution des eaux", 150),
             new Property("Rue la Fayette", _yellowColorGroup, 280),
             new CommunityChestSquare("Allez en Prison"),
             new Property("Avenue de Breteuil", _greenColorGroup, 300),
@@ -80,5 +75,9 @@ public class GameBoard
             new CommunityChestSquare("Taxe de luxe"),
             new Property("Rue de la Paix", _darkBlueColorGroup, 400)
         };
+    }
+    public int GetSquareIndex(Square square)
+    {
+        return Squares.IndexOf(square);
     }
 }

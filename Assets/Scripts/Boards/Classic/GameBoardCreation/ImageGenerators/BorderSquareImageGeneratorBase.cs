@@ -54,7 +54,7 @@ public abstract class BorderSquareImageGeneratorBase : ISquareImageGenerator
             gfx.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
             var textBoxMargin = (int)(width*0.02);
             var textBoxWidth = (int)(width-textBoxMargin*2);
-            var textBox = new RectangleF(textBoxMargin, height*heightPercent, textBoxWidth, height*.2f);
+            var textBox = new RectangleF(textBoxMargin, height*heightPercent, textBoxWidth, height*.3f);
             gfx.DrawString(text, new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, fontSize), blackBrush, textBox, stringFormat);
         }
     }

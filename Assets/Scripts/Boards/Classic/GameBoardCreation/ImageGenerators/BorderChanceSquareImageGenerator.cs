@@ -25,7 +25,7 @@ public class BorderChanceImageGenerator:BorderSquareImageGeneratorBase
         var bitmap = InitImageWithBackground();
 
         DrawTextToImage(bitmap, square.Name.ToUpper(), .08f, ChanceNameFontSize);
-        DrawImageToImage(bitmap, Path.Combine("Images", occurenceToFileName[chanceSquareOccurence++%3]), .22f, .2f);
+        DrawImageToImage(bitmap, Path.Combine("Classic", "Images", occurenceToFileName[chanceSquareOccurence++%3]), .22f, .2f);
         return bitmap;
     }
 }

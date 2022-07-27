@@ -18,7 +18,7 @@ public class BorderTrainStationImageGenerator : BorderDeedSquareImageGenerator
 
         var bitmap = InitImageWithBackground();
         DrawTextToImage(bitmap, trainStation.Name.ToUpper(), .08f, TrainStationNameFontSize);
-        DrawImageToImage(bitmap, "Images\\train.png", .1f, .37f);
+        DrawImageToImage(bitmap, Path.Combine("Classic", "Images", "train.png"), .1f, .37f);
         DrawPriceToImage(bitmap, trainStation);
         return bitmap;
     }
