@@ -31,7 +31,7 @@ public class BorderPropertySquareImageGenerator : BorderDeedSquareImageGenerator
             Pen blackBorderPen = new Pen(MonopolyClassicTheme.Black, borderThickness);
 
             gfx.FillRectangle(propertyColorBrush, 0, 0, width, height / 5);
-            gfx.DrawRectangle(blackBorderPen, 0, borderThickness / 2, width, height / 5);
+            gfx.DrawRectangle(blackBorderPen, 0, 0, width, height / 5);
         }
     }
 }

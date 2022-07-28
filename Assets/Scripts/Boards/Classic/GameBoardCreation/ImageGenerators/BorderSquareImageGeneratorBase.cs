@@ -32,7 +32,7 @@ public abstract class BorderSquareImageGeneratorBase : ISquareImageGenerator
             gfx.FillRectangle(greenBrush, 0, 0, width, height);
             Pen blackBorderPen = new Pen(MonopolyClassicTheme.Black, borderThickness);
             //Offset is necessary otherwise to correct some border problems
-            gfx.DrawRectangle(blackBorderPen, 0, borderThickness/2, width, height-borderThickness/2);
+            gfx.DrawRectangle(blackBorderPen, 0, 0, width, height-borderThickness/2);
         }
         return bitmap;
     }

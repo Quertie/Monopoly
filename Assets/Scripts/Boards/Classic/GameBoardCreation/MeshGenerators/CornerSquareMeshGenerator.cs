@@ -19,7 +19,7 @@ public class CornerSquareMeshGenerator:ISquareMeshGenerator
             new Vector3(_squareHeight/2, 0f, _squareHeight/2),
             new Vector3(-_squareHeight/2, 0f, _squareHeight/2)
         };
-        mesh.uv = new[] {new Vector2(1,0), new Vector2(0,0), new Vector2(0,1), new Vector2(1,1)};
+        mesh.uv = new[] {new Vector2(0,0), new Vector2(1,0), new Vector2(1,1), new Vector2(0,1)};
         mesh.triangles = new[] {0, 2, 1, 0, 3, 2};
         mesh.RecalculateNormals();
         return mesh;
