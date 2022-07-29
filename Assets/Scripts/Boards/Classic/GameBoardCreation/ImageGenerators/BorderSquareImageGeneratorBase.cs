@@ -1,24 +1,14 @@
 using System.Drawing;
 using System.Drawing.Text;
-using System.IO;
 using UnityEngine;
 
-public abstract class BorderSquareImageGeneratorBase : ISquareImageGenerator
+public abstract class BorderSquareImageGeneratorBase : SquareImageGeneratorBase
 {
-    protected float _squareHeight;
-    protected float _squareWidth;
-
-    protected const int borderThickness = 16;
-    private const int SmallestSide = 500;
     private const int SmallFontSize = 38;
 
-    protected BorderSquareImageGeneratorBase(float squareHeight, float squareWidth)
+    protected BorderSquareImageGeneratorBase(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
     {
-        _squareHeight = squareHeight;
-        _squareWidth = squareWidth;
     }
-
-    public abstract Bitmap GetImage(Square square);
 
     protected Bitmap InitImageWithBackground()
     {
@@ -35,12 +25,6 @@ public abstract class BorderSquareImageGeneratorBase : ISquareImageGenerator
             gfx.DrawRectangle(blackBorderPen, 0, 0, width, height-borderThickness/2);
         }
         return bitmap;
-    }
-
-    protected (int height, int width) GetImageSize()
-    {
-        if (_squareHeight>_squareWidth) return ((int)(SmallestSide*_squareHeight/_squareWidth), SmallestSide);
-        return (SmallestSide, (int)(SmallestSide * _squareWidth/_squareHeight));
     }
 
     protected void DrawTextToImage(Bitmap bitmap, string text, float heightPercent, int fontSize)
@@ -63,20 +47,5 @@ public abstract class BorderSquareImageGeneratorBase : ISquareImageGenerator
     public void DrawTextToBottomOfImage(Bitmap bitmap, string text)
     {
         DrawTextToImage(bitmap, text, .85f, SmallFontSize);
-    }
-
-    protected void DrawImageToImage(Bitmap bitmap, string imageAssetPath, float imageMarginPct, float imageVerticalPositionPct)
-    {
-        var (height, width) = GetImageSize();
-
-        using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
-        using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
-        {
-            var trainImage = new Bitmap(Path.Combine(Application.streamingAssetsPath, imageAssetPath).Replace("/", "\\"));
-            var imageMargin = (int)(width * imageMarginPct);
-            var imageWidth = (int)(width - imageMargin * 2);
-            var imageHeight = (int)((float)trainImage.Height / trainImage.Width * imageWidth);
-            gfx.DrawImage(trainImage, imageMargin, height * imageVerticalPositionPct, imageWidth, imageHeight);
-        }
     }
 }

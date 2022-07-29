@@ -54,7 +54,7 @@ public class GameBoard : IGameBoard
             new CommunityChest("Caisse de communauté"),
             new Property("Boulevard Saint Michel", _orangeColorGroup, 180),
             new Property("Place Pigalle", _orangeColorGroup, 200),
-            new CommunityChestSquare("Parc Gratuit"),
+            new FreeParking("Parc Gratuit"),
             new Property("Avenue Matignon", _redColorGroup, 220),
             new Chance("Chance"),
             new Property("Boulevard Malesherbes", _redColorGroup, 220),

@@ -119,16 +119,17 @@ public class SquareGameObjectGeneratorFactory
             return _borderLuxuryTaxImageGeneratorValue;
         }
     }
-
-    private ISquareImageGenerator _cornerSquareImageGeneratorValue;
-    private ISquareImageGenerator _cornerSquareImageGenerator
+    
+    private ISquareImageGenerator _freeParkingImageGeneratorValue;
+    private ISquareImageGenerator _freeParkingImageGenerator
     {
         get{
-            if (_cornerSquareImageGeneratorValue == null)
-                _cornerSquareImageGeneratorValue = new CornerSquareImageGenerator();
-            return _cornerSquareImageGeneratorValue;
+            if (_freeParkingImageGeneratorValue == null)
+                _freeParkingImageGeneratorValue = new FreeParkingImageGenerator(_squareHeight);
+            return _freeParkingImageGeneratorValue;
         }
     }
+
     
     public SquareGameObjectGeneratorFactory(GameBoard gameBoard, float squareWidth, float squareHeight)
     {
@@ -151,7 +152,6 @@ public class SquareGameObjectGeneratorFactory
 
     private ISquareImageGenerator GetSquareImageGenerator(Square square)
     {
-        if (SquareIsCorner(square, _gameBoard)) return _cornerSquareImageGenerator;
         if (square is Property) return _borderPropertySquareImageGenerator;
         if (square is TrainStation) return _borderTrainStationImageGenerator;
         if (square is Chance) return _borderChanceImageGenerator;
@@ -160,6 +160,8 @@ public class SquareGameObjectGeneratorFactory
         if (square is WaterWorks) return _borderWaterWorksImageGenerator;
         if (square is IncomeTax) return _borderIncomeTaxImageGenerator;
         if (square is LuxuryTax) return _borderLuxuryTaxImageGenerator;
+        if (square is FreeParking) return _freeParkingImageGenerator;
+        if (SquareIsCorner(square, _gameBoard)) return _freeParkingImageGenerator;
         return _borderOtherSquareImageGenerator;
     }
 
