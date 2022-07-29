@@ -4,6 +4,8 @@ using System.Drawing.Text;
 public abstract class CornerSquareImageGenerator : SquareImageGeneratorBase
 {
 
+    protected const int cornerNameFontSize = 40;
+
     public CornerSquareImageGenerator(float squareHeight):base(squareHeight, squareHeight)
     {
     }
@@ -25,4 +27,23 @@ public abstract class CornerSquareImageGenerator : SquareImageGeneratorBase
         }
         return bitmap;
     }
+
+    protected void DrawDiagonalTextToImage(Bitmap bitmap, string text, float distancePctFromTop)
+    {
+        var (height, width) = GetImageSize();
+        
+        using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
+        using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
+        {
+            var stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Center;
+            gfx.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
+
+            gfx.TranslateTransform(distancePctFromTop*height, distancePctFromTop*height);
+            gfx.RotateTransform(-45);
+            gfx.DrawString(text, new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, cornerNameFontSize), blackBrush, new PointF(0f, 0f), stringFormat);
+        }
+    }
+
 }

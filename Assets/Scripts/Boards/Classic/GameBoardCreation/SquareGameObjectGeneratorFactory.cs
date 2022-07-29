@@ -130,6 +130,16 @@ public class SquareGameObjectGeneratorFactory
         }
     }
 
+    private ISquareImageGenerator _goToJailImageGeneratorValue;
+    private ISquareImageGenerator _goToJailImageGenerator
+    {
+        get{
+            if (_goToJailImageGeneratorValue == null)
+                _goToJailImageGeneratorValue = new GoToJailImageGenerator(_squareHeight);
+            return _goToJailImageGeneratorValue;
+        }
+    }
+
     
     public SquareGameObjectGeneratorFactory(GameBoard gameBoard, float squareWidth, float squareHeight)
     {
@@ -161,6 +171,7 @@ public class SquareGameObjectGeneratorFactory
         if (square is IncomeTax) return _borderIncomeTaxImageGenerator;
         if (square is LuxuryTax) return _borderLuxuryTaxImageGenerator;
         if (square is FreeParking) return _freeParkingImageGenerator;
+        if (square is GoToJail) return _goToJailImageGenerator;
         if (SquareIsCorner(square, _gameBoard)) return _freeParkingImageGenerator;
         return _borderOtherSquareImageGenerator;
     }

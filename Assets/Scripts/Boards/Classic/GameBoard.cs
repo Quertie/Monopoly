@@ -64,7 +64,7 @@ public class GameBoard : IGameBoard
             new Property("Place de la Bourse", _yellowColorGroup, 260),
             new WaterWorks("Compagnie de distribution des eaux", 150),
             new Property("Rue la Fayette", _yellowColorGroup, 280),
-            new CommunityChestSquare("Allez en Prison"),
+            new GoToJail("Allez en Prison"),
             new Property("Avenue de Breteuil", _greenColorGroup, 300),
             new Property("Avenue Foch", _greenColorGroup, 300),
             new CommunityChest("Caisse de communauté"),
