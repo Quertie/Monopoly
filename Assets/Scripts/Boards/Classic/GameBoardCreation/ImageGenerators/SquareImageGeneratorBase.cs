@@ -1,6 +1,7 @@
 using System.IO;
 using System.Drawing;
 using UnityEngine;
+using System.Drawing.Text;
 
 public abstract class SquareImageGeneratorBase:ISquareImageGenerator
 {
@@ -22,6 +23,23 @@ public abstract class SquareImageGeneratorBase:ISquareImageGenerator
     {
         if (_squareHeight>_squareWidth) return (BiggestSide, (int)(BiggestSide*_squareWidth/_squareHeight));
         return ((int)(BiggestSide * _squareHeight/_squareWidth), BiggestSide);
+    }
+
+    protected void DrawTextToImage(Bitmap bitmap, string text, float heightPercent, int fontSize)
+    {
+        var (height, width) = GetImageSize();
+
+        using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
+        using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
+        {
+            var stringFormat = new StringFormat();
+            stringFormat.Alignment = StringAlignment.Center;
+            gfx.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+            var textBoxMargin = (int)(width*0.02);
+            var textBoxWidth = (int)(width-textBoxMargin*2);
+            var textBox = new RectangleF(textBoxMargin, height*heightPercent, textBoxWidth, height*.3f);
+            gfx.DrawString(text, new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, fontSize), blackBrush, textBox, stringFormat);
+        }
     }
 
     protected void DrawImageToImage(Bitmap bitmap, string imageAssetPath, float imageMarginPct, float imageVerticalPositionPct)

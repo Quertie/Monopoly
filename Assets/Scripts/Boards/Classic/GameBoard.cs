@@ -44,7 +44,7 @@ public class GameBoard : IGameBoard
             new Chance("Chance"),
             new Property("Rue de Courcelles", _lightBlueColorGroup, 100),
             new Property("Avenue de la République", _lightBlueColorGroup, 120),
-            new CommunityChestSquare("Prison"),
+            new Jail("En prison"),
             new Property("Boulevard de la Villette", _violetColorGroup, 140),
             new ElectricCompany("Compagnie de distribution d'électricité", 150),
             new Property("Avenue de Neuilly", _violetColorGroup, 140),

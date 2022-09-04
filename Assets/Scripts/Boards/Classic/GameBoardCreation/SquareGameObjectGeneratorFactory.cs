@@ -150,6 +150,15 @@ public class SquareGameObjectGeneratorFactory
         }
     }
 
+    private ISquareImageGenerator _jailImageGeneratorValue;
+    private ISquareImageGenerator _jailImageGenerator
+    {
+        get{
+            if (_jailImageGeneratorValue == null)
+                _jailImageGeneratorValue = new JailImageGenerator(_squareHeight);
+            return _jailImageGeneratorValue;
+        }
+    }
     
     public SquareGameObjectGeneratorFactory(GameBoard gameBoard, float squareWidth, float squareHeight)
     {
@@ -183,6 +192,7 @@ public class SquareGameObjectGeneratorFactory
         if (square is FreeParking) return _freeParkingImageGenerator;
         if (square is GoToJail) return _goToJailImageGenerator;
         if (square is Go) return _goImageGenerator;
+        if (square is Jail) return _jailImageGenerator;
         if (SquareIsCorner(square, _gameBoard)) return _freeParkingImageGenerator;
         return _borderOtherSquareImageGenerator;
     }
