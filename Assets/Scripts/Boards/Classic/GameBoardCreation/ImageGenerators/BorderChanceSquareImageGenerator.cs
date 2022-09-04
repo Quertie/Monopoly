@@ -5,8 +5,6 @@ using System.IO;
 
 public class BorderChanceImageGenerator:BorderSquareImageGeneratorBase
 {
-
-    private const int ChanceNameFontSize = 40;
     private int chanceSquareOccurence = 0;
 
     private Dictionary<int, string> occurenceToFileName = new Dictionary<int, string> ()
@@ -24,7 +22,7 @@ public class BorderChanceImageGenerator:BorderSquareImageGeneratorBase
     {
         var bitmap = InitImageWithBackground();
 
-        DrawTextToImage(bitmap, square.Name.ToUpper(), .08f, ChanceNameFontSize);
+        DrawTextToImage(bitmap, square.Name.ToUpper(), .08f, MonopolyClassicTheme.PropertyNameFontSize);
         DrawImageToImage(bitmap, Path.Combine("Classic", "Images", occurenceToFileName[chanceSquareOccurence++%3]), .22f, .2f);
         return bitmap;
     }

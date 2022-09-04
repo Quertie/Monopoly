@@ -4,8 +4,6 @@ using UnityEngine;
 
 public abstract class BorderSquareImageGeneratorBase : SquareImageGeneratorBase
 {
-    private const int SmallFontSize = 38;
-
     protected BorderSquareImageGeneratorBase(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
     {
     }
@@ -46,6 +44,6 @@ public abstract class BorderSquareImageGeneratorBase : SquareImageGeneratorBase
 
     public void DrawTextToBottomOfImage(Bitmap bitmap, string text)
     {
-        DrawTextToImage(bitmap, text, .85f, SmallFontSize);
+        DrawTextToImage(bitmap, text, .85f, MonopolyClassicTheme.SmallFontSize);
     }
 }

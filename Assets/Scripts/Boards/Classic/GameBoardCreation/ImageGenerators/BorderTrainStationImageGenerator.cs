@@ -4,9 +4,6 @@ using System.IO;
 using UnityEngine;
 public class BorderTrainStationImageGenerator : BorderDeedSquareImageGenerator
 {
-
-    private const int TrainStationNameFontSize = 40;
-
     public BorderTrainStationImageGenerator(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
     {
     }
@@ -17,7 +14,7 @@ public class BorderTrainStationImageGenerator : BorderDeedSquareImageGenerator
         var (height, width) = GetImageSize();
 
         var bitmap = InitImageWithBackground();
-        DrawTextToImage(bitmap, trainStation.Name.ToUpper(), .08f, TrainStationNameFontSize);
+        DrawTextToImage(bitmap, trainStation.Name.ToUpper(), .08f, MonopolyClassicTheme.PropertyNameFontSize);
         DrawImageToImage(bitmap, Path.Combine("Classic", "Images", "train.png"), .1f, .37f);
         DrawPriceToImage(bitmap, trainStation);
         return bitmap;

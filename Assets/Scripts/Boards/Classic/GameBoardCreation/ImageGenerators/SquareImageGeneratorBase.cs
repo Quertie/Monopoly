@@ -4,8 +4,8 @@ using UnityEngine;
 
 public abstract class SquareImageGeneratorBase:ISquareImageGenerator
 {
-    private const int SmallestSide = 500;
-    protected const int borderThickness = 16;
+    private const int BiggestSide = 500;
+    protected const int borderThickness = 8;
     
     protected float _squareHeight;
     protected float _squareWidth;
@@ -20,8 +20,8 @@ public abstract class SquareImageGeneratorBase:ISquareImageGenerator
 
     protected (int height, int width) GetImageSize()
     {
-        if (_squareHeight>_squareWidth) return ((int)(SmallestSide*_squareHeight/_squareWidth), SmallestSide);
-        return (SmallestSide, (int)(SmallestSide * _squareWidth/_squareHeight));
+        if (_squareHeight>_squareWidth) return (BiggestSide, (int)(BiggestSide*_squareWidth/_squareHeight));
+        return ((int)(BiggestSide * _squareHeight/_squareWidth), BiggestSide);
     }
 
     protected void DrawImageToImage(Bitmap bitmap, string imageAssetPath, float imageMarginPct, float imageVerticalPositionPct)

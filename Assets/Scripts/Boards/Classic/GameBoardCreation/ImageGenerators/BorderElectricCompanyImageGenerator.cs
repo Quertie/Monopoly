@@ -3,9 +3,6 @@ using System.IO;
 
 public class BorderElectricCompanyImageGenerator : BorderDeedSquareImageGenerator
 {
-
-    private const int ElectricCompanyNameFontSize = 40;
-
     public BorderElectricCompanyImageGenerator(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
     {
     }
@@ -16,7 +13,7 @@ public class BorderElectricCompanyImageGenerator : BorderDeedSquareImageGenerato
         var (height, width) = GetImageSize();
 
         var bitmap = InitImageWithBackground();
-        DrawTextToImage(bitmap, deed.Name.ToUpper(), .08f, ElectricCompanyNameFontSize);
+        DrawTextToImage(bitmap, deed.Name.ToUpper(), .08f, MonopolyClassicTheme.PropertyNameFontSize);
         DrawImageToImage(bitmap, Path.Combine("Classic", "Images", "electric-company.png"), .2f, .37f);
         DrawPriceToImage(bitmap, deed);
         return bitmap;

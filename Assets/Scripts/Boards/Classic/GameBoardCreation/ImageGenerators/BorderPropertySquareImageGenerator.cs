@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BorderPropertySquareImageGenerator : BorderDeedSquareImageGenerator
 {
-    private const int PropertyNameFontSize = 40;
-
     public BorderPropertySquareImageGenerator(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
     {
     }
@@ -15,7 +13,7 @@ public class BorderPropertySquareImageGenerator : BorderDeedSquareImageGenerator
         var property = (Property)square;
         var bitmap = InitImageWithBackground();
 
-        DrawTextToImage(bitmap, property.Name.ToUpper(), .3f, PropertyNameFontSize);
+        DrawTextToImage(bitmap, property.Name.ToUpper(), .3f, MonopolyClassicTheme.PropertyNameFontSize);
         DrawColorGroupToImage(bitmap, property);
         DrawPriceToImage(bitmap, property);
         return bitmap;

@@ -5,6 +5,13 @@ using UnityEngine;
 
 public static class MonopolyClassicTheme
 {
+
+    public const int PropertyNameFontSize = 26;
+    public const int TaxNameFontSize = 35;
+    public const int SmallFontSize = 24;
+    public const int CornerNameFontSize = 40;
+    public const int GoFontSize = 65;
+
     public static System.Drawing.Color LightGreen => System.Drawing.Color.FromArgb(191, 219, 174);
     public static System.Drawing.Color Black => System.Drawing.Color.Black;
     public static System.Drawing.Color BrownGroupColor => System.Drawing.Color.FromArgb(132, 77, 36);
@@ -20,6 +27,16 @@ public static class MonopolyClassicTheme
         get
         {
             var fontPath = Path.Combine(Application.streamingAssetsPath, "Classic", "Fonts", "futura medium bt.ttf").Replace('/', '\\');
+            var collection = new PrivateFontCollection();
+            collection.AddFontFile(fontPath);
+            return new FontFamily(collection.Families[0].Name, collection);
+        }
+    }
+
+    public static FontFamily DeedNameBoldFontFamily{
+        get
+        {
+            var fontPath = Path.Combine(Application.streamingAssetsPath, "Classic", "Fonts", "futur.ttf").Replace('/', '\\');
             var collection = new PrivateFontCollection();
             collection.AddFontFile(fontPath);
             return new FontFamily(collection.Families[0].Name, collection);

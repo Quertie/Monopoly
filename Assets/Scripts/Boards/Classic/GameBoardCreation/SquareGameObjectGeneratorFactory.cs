@@ -140,6 +140,16 @@ public class SquareGameObjectGeneratorFactory
         }
     }
 
+    private ISquareImageGenerator _goImageGeneratorValue;
+    private ISquareImageGenerator _goImageGenerator
+    {
+        get{
+            if (_goImageGeneratorValue == null)
+                _goImageGeneratorValue = new GoImageGenerator(_squareHeight);
+            return _goImageGeneratorValue;
+        }
+    }
+
     
     public SquareGameObjectGeneratorFactory(GameBoard gameBoard, float squareWidth, float squareHeight)
     {
@@ -172,6 +182,7 @@ public class SquareGameObjectGeneratorFactory
         if (square is LuxuryTax) return _borderLuxuryTaxImageGenerator;
         if (square is FreeParking) return _freeParkingImageGenerator;
         if (square is GoToJail) return _goToJailImageGenerator;
+        if (square is Go) return _goImageGenerator;
         if (SquareIsCorner(square, _gameBoard)) return _freeParkingImageGenerator;
         return _borderOtherSquareImageGenerator;
     }

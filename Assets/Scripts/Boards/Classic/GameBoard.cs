@@ -34,7 +34,7 @@ public class GameBoard : IGameBoard
     private List<Square> CreateSquares()
     {
         return new List<Square> {
-            new CommunityChestSquare("Go"),
+            new Go("Départ"),
             new Property("Boulevard de Belleville", _brownColorGroup, 60),
             new CommunityChest("Caisse de communauté"),
             new Property("Rue Lecourbe", _brownColorGroup, 60),
