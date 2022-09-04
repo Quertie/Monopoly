@@ -15,7 +15,7 @@ public class GameController : MonoBehaviour
 
     public void BuildBoard(GameBoard gameBoard)
     {
-        var boardBuilder = new BoardBuilder(GameBoard, new SquareImageGenerator());
+        var boardBuilder = new BoardBuilder(GameBoard, new SquareGameObjectGeneratorFactory(GameBoard, 4f, 6.5f));
         boardBuilder.BuildBoard();
     }
 

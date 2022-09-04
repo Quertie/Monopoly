@@ -1,4 +1,4 @@
-public class Square
+public abstract class Square
 {
     public string Name {get;}
 
