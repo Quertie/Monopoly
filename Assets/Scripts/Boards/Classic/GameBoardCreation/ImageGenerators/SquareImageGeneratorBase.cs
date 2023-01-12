@@ -49,7 +49,8 @@ public abstract class SquareImageGeneratorBase:ISquareImageGenerator
         using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
         using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
         {
-            var trainImage = new Bitmap(Path.Combine(Application.streamingAssetsPath, imageAssetPath).Replace("/", "\\"));
+            var trainImageFilename = Path.Combine(Application.streamingAssetsPath, imageAssetPath).Replace("\\", "/");
+            var trainImage = new Bitmap(trainImageFilename);
             var imageMargin = (int)(width * imageMarginPct);
             var imageWidth = (int)(width - imageMargin * 2);
             var imageHeight = (int)((float)trainImage.Height / trainImage.Width * imageWidth);

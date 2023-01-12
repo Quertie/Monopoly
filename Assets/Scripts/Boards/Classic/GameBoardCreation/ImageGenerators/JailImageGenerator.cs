@@ -19,7 +19,7 @@ public class JailImageGenerator : CornerSquareImageGenerator
         using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
         using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
         {
-            var jailImage = new Bitmap(Path.Combine(Application.streamingAssetsPath, "Classic", "Images", "jail.png").Replace("/", "\\"));
+            var jailImage = new Bitmap(Path.Combine(Application.streamingAssetsPath, "Classic", "Images", "jail.png"));
             var imageMargin = (int)(width * 1/4);
             var imageWidth = (int)(width *3/4);
             var imageHeight = (int)((float)jailImage.Height / jailImage.Width * imageWidth);
