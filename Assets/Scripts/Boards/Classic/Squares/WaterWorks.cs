@@ -1,6 +1,11 @@
-public class WaterWorks:Company
+using Squares;
+
+namespace Boards.Classic.Squares
 {
-    public WaterWorks(string name, int price):base(name, price)
+    public class WaterWorks:Company
     {
+        public WaterWorks(string name, int price):base(name, price)
+        {
+        }
     }
 }

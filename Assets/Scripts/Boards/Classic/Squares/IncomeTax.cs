@@ -1,6 +1,11 @@
-public class IncomeTax:Tax
+using Squares;
+
+namespace Boards.Classic.Squares
 {
-    public IncomeTax(string name, int amountDue):base(name, amountDue)
+    public class IncomeTax:Tax
     {
+        public IncomeTax(string name, int amountDue):base(name, amountDue)
+        {
+        }
     }
 }

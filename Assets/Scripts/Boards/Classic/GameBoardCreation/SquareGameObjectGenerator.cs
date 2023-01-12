@@ -1,56 +1,63 @@
-using UnityEngine;
 using System.Drawing;
-using System.IO;
 using System.Drawing.Imaging;
+using System.IO;
+using Boards.Classic.GameBoardCreation.ImageGenerators;
+using Boards.Classic.GameBoardCreation.MeshGenerators;
+using Squares;
+using UnityEngine;
 
-public class SquareGameObjectGenerator
+namespace Boards.Classic.GameBoardCreation
 {
-    private ISquareImageGenerator _imageGenerator;
-    private ISquareMeshGenerator _meshGenerator;
-
-
-    public SquareGameObjectGenerator(ISquareImageGenerator imageGenerator, ISquareMeshGenerator meshGenerator)
+    public class SquareGameObjectGenerator
     {
-        _imageGenerator = imageGenerator;
-        _meshGenerator = meshGenerator;
-    }
+        private readonly ISquareImageGenerator _imageGenerator;
+        private readonly ISquareMeshGenerator _meshGenerator;
 
 
-    public GameObject CreateGameObject(Square square)
-    {
-        var squareBitmap = _imageGenerator.GetImage(square);
-        var texture = TextureFromBitmap(squareBitmap);
-
-        var squareObject = CreateSquareGameObject(square);
-        squareObject.GetComponent<Renderer>().material.mainTexture = texture;
-        return squareObject;
-    }
-
-    private Texture2D TextureFromBitmap(Bitmap bmp)
-    {
-        var units = GraphicsUnit.Point;
-        var bounds = bmp.GetBounds(ref units);
-        var texture = new Texture2D((int)bounds.X, (int)bounds.Y);
-
-        using (MemoryStream ms = new MemoryStream())
+        public SquareGameObjectGenerator(ISquareImageGenerator imageGenerator, ISquareMeshGenerator meshGenerator)
         {
-            bmp.Save(ms,ImageFormat.Png);
-
-            ms.Position = 0;
-            var buffer = new byte[ms.Length];
-            ms.Read(buffer,0,buffer.Length);
-        
-            texture.LoadImage(buffer);
+            _imageGenerator = imageGenerator;
+            _meshGenerator = meshGenerator;
         }
-        return texture;
-    }
 
-    private GameObject CreateSquareGameObject(Square square)
-    {
-        var mesh = _meshGenerator.GetMesh();
-        var gameObject = new GameObject("Square", typeof(MeshRenderer), typeof(MeshFilter), typeof(MeshCollider));
-        gameObject.GetComponent<MeshFilter>().mesh = mesh;
-        return gameObject;
-    }
 
+        public GameObject CreateGameObject(Square square)
+        {
+            var squareBitmap = _imageGenerator.GetImage(square);
+            var texture = TextureFromBitmap(squareBitmap);
+
+            var squareObject = CreateSquareGameObject();
+            squareObject.GetComponent<Renderer>().material.mainTexture = texture;
+            return squareObject;
+        }
+
+        private static Texture2D TextureFromBitmap(Image bmp)
+        {
+            var units = GraphicsUnit.Point;
+            var bounds = bmp.GetBounds(ref units);
+            var texture = new Texture2D((int)bounds.X, (int)bounds.Y);
+
+            using (var ms = new MemoryStream())
+            {
+                bmp.Save(ms,ImageFormat.Png);
+
+                ms.Position = 0;
+                var buffer = new byte[ms.Length];
+                // ReSharper disable once MustUseReturnValue
+                ms.Read(buffer,0,buffer.Length);
+        
+                texture.LoadImage(buffer);
+            }
+            return texture;
+        }
+
+        private GameObject CreateSquareGameObject()
+        {
+            var mesh = _meshGenerator.GetMesh();
+            var gameObject = new GameObject("Square", typeof(MeshRenderer), typeof(MeshFilter), typeof(MeshCollider));
+            gameObject.GetComponent<MeshFilter>().mesh = mesh;
+            return gameObject;
+        }
+
+    }
 }

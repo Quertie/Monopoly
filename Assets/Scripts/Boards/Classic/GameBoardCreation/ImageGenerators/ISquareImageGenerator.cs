@@ -1,6 +1,10 @@
 using System.Drawing;
+using Squares;
 
-public interface ISquareImageGenerator
+namespace Boards.Classic.GameBoardCreation.ImageGenerators
 {
-    Bitmap GetImage(Square square);
+    public interface ISquareImageGenerator
+    {
+        Bitmap GetImage(Square square);
+    }
 }

@@ -1,6 +1,9 @@
-public class Company:Deed
+namespace Squares
 {
-    public Company(string name, int price) : base(name, price)
+    public class Company:Deed
     {
+        public Company(string name, int price) : base(name, price)
+        {
+        }
     }
 }

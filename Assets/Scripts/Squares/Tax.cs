@@ -1,8 +1,11 @@
-public class Tax:Square
+namespace Squares
 {
-    public int amountDue {get;}
-    public Tax(string name, int amountDue):base(name)
+    public class Tax:Square
     {
-        this.amountDue = amountDue;
+        public int amountDue {get;}
+        public Tax(string name, int amountDue):base(name)
+        {
+            this.amountDue = amountDue;
+        }
     }
 }

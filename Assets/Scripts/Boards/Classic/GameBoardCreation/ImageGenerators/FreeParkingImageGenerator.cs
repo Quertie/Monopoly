@@ -1,31 +1,32 @@
 using System;
 using System.Drawing;
-using System.Drawing.Text;
-using System.Collections;
 using System.IO;
 using System.Linq;
-using UnityEngine;
+using Squares;
 
-public class FreeParkingImageGenerator : CornerSquareImageGenerator
+namespace Boards.Classic.GameBoardCreation.ImageGenerators
 {
-
-    public FreeParkingImageGenerator(float squareHeight):base(squareHeight)
+    public class FreeParkingImageGenerator : CornerSquareImageGenerator
     {
-    }
 
-    public override Bitmap GetImage(Square square)
-    {
-        var bitmap = InitImageWithBackground();
+        public FreeParkingImageGenerator(float squareHeight):base(squareHeight)
+        {
+        }
 
-        var imageMarginPct = .25f;
-        DrawImageToImage(bitmap, Path.Combine("Classic", "Images", "free-parking.png"), imageMarginPct, imageMarginPct);
+        public override Bitmap GetImage(Square square)
+        {
+            var bitmap = InitImageWithBackground();
 
-        var topText = square.Name.ToUpper().Split(' ')[0];
-        var bottomText = String.Join(" ", square.Name.ToUpper().Split(' ').Skip(1));
+            const float imageMarginPct = .25f;
+            DrawImageToImage(bitmap, Path.Combine("Classic", "Images", "free-parking.png"), imageMarginPct, imageMarginPct);
 
-        DrawDiagonalTextToImage(bitmap, topText, .2f);
-        DrawDiagonalTextToImage(bitmap, bottomText, .65f);
+            var topText = square.Name.ToUpper().Split(' ')[0];
+            var bottomText = string.Join(" ", square.Name.ToUpper().Split(' ').Skip(1));
+
+            DrawDiagonalTextToImage(bitmap, topText, .2f);
+            DrawDiagonalTextToImage(bitmap, bottomText, .65f);
         
-        return bitmap;
+            return bitmap;
+        }
     }
 }

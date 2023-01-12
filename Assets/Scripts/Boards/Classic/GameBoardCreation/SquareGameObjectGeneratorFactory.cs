@@ -1,209 +1,120 @@
-using System;
-using UnityEngine;
+using Boards.Classic.GameBoardCreation.ImageGenerators;
+using Boards.Classic.GameBoardCreation.MeshGenerators;
+using Boards.Classic.Squares;
+using Squares;
 
-public class SquareGameObjectGeneratorFactory
+namespace Boards.Classic.GameBoardCreation
 {
-    private readonly GameBoard _gameBoard;
-    private readonly float _squareWidth;
-    private readonly float _squareHeight;
-
-    private CornerSquareMeshGenerator _cornerSquareMeshGeneratorValue;
-    private CornerSquareMeshGenerator _cornerSquareMeshGenerator 
+    public class SquareGameObjectGeneratorFactory
     {
-        get
+        private readonly GameBoard _gameBoard;
+        private readonly float _squareWidth;
+        private readonly float _squareHeight;
+
+        private CornerSquareMeshGenerator _cornerSquareMeshGeneratorValue;
+        private CornerSquareMeshGenerator _cornerSquareMeshGenerator => _cornerSquareMeshGeneratorValue ??= new CornerSquareMeshGenerator(_squareHeight);
+
+        private BorderSquareMeshGenerator _borderSquareMeshGeneratorValue;
+
+        private BorderSquareMeshGenerator _borderSquareMeshGenerator => _borderSquareMeshGeneratorValue ??= new BorderSquareMeshGenerator(_squareHeight, _squareWidth);
+
+        private ISquareImageGenerator _borderOtherSquareImageGeneratorValue;
+        private ISquareImageGenerator _borderOtherSquareImageGenerator => _borderOtherSquareImageGeneratorValue ??= new BorderOtherSquareImageGenerator(_squareHeight, _squareWidth);
+
+        private ISquareImageGenerator _borderPropertySquareImageGeneratorValue;
+        private ISquareImageGenerator _borderPropertySquareImageGenerator => _borderPropertySquareImageGeneratorValue ??= new BorderPropertySquareImageGenerator(_squareHeight, _squareWidth);
+
+        private ISquareImageGenerator _borderTrainStationImageGeneratorValue;
+        private ISquareImageGenerator _borderTrainStationImageGenerator => _borderTrainStationImageGeneratorValue ??= new BorderTrainStationImageGenerator(_squareHeight, _squareWidth);
+
+        private ISquareImageGenerator _borderChanceImageGeneratorValue;
+        private ISquareImageGenerator _borderChanceImageGenerator => _borderChanceImageGeneratorValue ??= new BorderChanceImageGenerator(_squareHeight, _squareWidth);
+
+        private ISquareImageGenerator _borderCommunityChestImageGeneratorValue;
+        private ISquareImageGenerator _borderCommunityChestImageGenerator => _borderCommunityChestImageGeneratorValue ??= new BorderCommunityChestImageGenerator(_squareHeight, _squareWidth);
+
+        private ISquareImageGenerator _borderElectricCompanyImageGeneratorValue;
+        private ISquareImageGenerator _borderElectricCompanyImageGenerator => _borderElectricCompanyImageGeneratorValue ??= new BorderElectricCompanyImageGenerator(_squareHeight, _squareWidth);
+
+        private ISquareImageGenerator _borderWaterWorksImageGeneratorValue;
+        private ISquareImageGenerator _borderWaterWorksImageGenerator => _borderWaterWorksImageGeneratorValue ??= new BorderWaterWorksImageGenerator(_squareHeight, _squareWidth);
+
+        private ISquareImageGenerator _borderIncomeTaxImageGeneratorValue;
+        private ISquareImageGenerator _borderIncomeTaxImageGenerator => _borderIncomeTaxImageGeneratorValue ??= new BorderIncomeTaxImageGenerator(_squareHeight, _squareWidth);
+
+        private ISquareImageGenerator _borderLuxuryTaxImageGeneratorValue;
+        private ISquareImageGenerator _borderLuxuryTaxImageGenerator => _borderLuxuryTaxImageGeneratorValue ??= new BorderLuxuryTaxImageGenerator(_squareHeight, _squareWidth);
+
+        private ISquareImageGenerator _freeParkingImageGeneratorValue;
+        private ISquareImageGenerator _freeParkingImageGenerator => _freeParkingImageGeneratorValue ??= new FreeParkingImageGenerator(_squareHeight);
+
+        private ISquareImageGenerator _goToJailImageGeneratorValue;
+        private ISquareImageGenerator _goToJailImageGenerator => _goToJailImageGeneratorValue ??= new GoToJailImageGenerator(_squareHeight);
+
+        private ISquareImageGenerator _goImageGeneratorValue;
+        private ISquareImageGenerator _goImageGenerator => _goImageGeneratorValue ??= new GoImageGenerator(_squareHeight);
+
+        private ISquareImageGenerator _jailImageGeneratorValue;
+        private ISquareImageGenerator _jailImageGenerator => _jailImageGeneratorValue ??= new JailImageGenerator(_squareHeight);
+    
+        public SquareGameObjectGeneratorFactory(GameBoard gameBoard, float squareWidth, float squareHeight)
         {
-            if (_cornerSquareMeshGeneratorValue == null)
-                _cornerSquareMeshGeneratorValue = new CornerSquareMeshGenerator(_squareHeight);
-            return _cornerSquareMeshGeneratorValue;
+            _gameBoard = gameBoard;
+            _squareWidth = squareWidth;
+            _squareHeight = squareHeight;
         }
-    }
 
-    private BorderSquareMeshGenerator _borderSquareMeshGeneratorValue;
-
-    private BorderSquareMeshGenerator _borderSquareMeshGenerator 
-    {
-        get
+        public SquareGameObjectGenerator GetGameObjectGenerator(Square square)
         {
-            if (_borderSquareMeshGeneratorValue == null)
-                _borderSquareMeshGeneratorValue = new BorderSquareMeshGenerator(_squareHeight, _squareWidth);
-            return _borderSquareMeshGeneratorValue;
+            var imageGenerator = GetSquareImageGenerator(square);
+            var meshGenerator = GetSquareMeshGenerator(square);
+            return new SquareGameObjectGenerator(imageGenerator, meshGenerator);
         }
-    }
 
-    private ISquareImageGenerator _borderOtherSquareImageGeneratorValue;
-    private ISquareImageGenerator _borderOtherSquareImageGenerator
-    {
-        get{
-            if (_borderOtherSquareImageGeneratorValue == null)
-                _borderOtherSquareImageGeneratorValue = new BorderOtherSquareImageGenerator(_squareHeight, _squareWidth);
-            return _borderOtherSquareImageGeneratorValue;
+        private ISquareMeshGenerator GetSquareMeshGenerator(Square square)
+        {
+            return SquareIsCorner(square) ? _cornerSquareMeshGenerator : _borderSquareMeshGenerator;
         }
-    }
-    
-    private ISquareImageGenerator _borderPropertySquareImageGeneratorValue;
-    private ISquareImageGenerator _borderPropertySquareImageGenerator
-    {
-        get{
-            if (_borderPropertySquareImageGeneratorValue == null)
-                _borderPropertySquareImageGeneratorValue = new BorderPropertySquareImageGenerator(_squareHeight, _squareWidth);
-            return _borderPropertySquareImageGeneratorValue;
+
+        private ISquareImageGenerator GetSquareImageGenerator(Square square)
+        {
+            switch (square)
+            {
+                case Property:
+                    return _borderPropertySquareImageGenerator;
+                case TrainStation:
+                    return _borderTrainStationImageGenerator;
+                case Chance:
+                    return _borderChanceImageGenerator;
+                case CommunityChest:
+                    return _borderCommunityChestImageGenerator;
+                case ElectricCompany:
+                    return _borderElectricCompanyImageGenerator;
+                case WaterWorks:
+                    return _borderWaterWorksImageGenerator;
+                case IncomeTax:
+                    return _borderIncomeTaxImageGenerator;
+                case LuxuryTax:
+                    return _borderLuxuryTaxImageGenerator;
+                case FreeParking:
+                    return _freeParkingImageGenerator;
+                case GoToJail:
+                    return _goToJailImageGenerator;
+                case Go:
+                    return _goImageGenerator;
+                case Jail:
+                    return _jailImageGenerator;
+            }
+
+            return SquareIsCorner(square) ? _freeParkingImageGenerator : _borderOtherSquareImageGenerator;
         }
-    }
 
-    private ISquareImageGenerator _borderTrainStationImageGeneratorValue;
-    private ISquareImageGenerator _borderTrainStationImageGenerator
-    {
-        get{
-            if (_borderTrainStationImageGeneratorValue == null)
-                _borderTrainStationImageGeneratorValue = new BorderTrainStationImageGenerator(_squareHeight, _squareWidth);
-            return _borderTrainStationImageGeneratorValue;
+        private bool SquareIsCorner(Square square)
+        {
+            var squareIndex = _gameBoard.GetSquareIndex(square);
+            var totalSquares = _gameBoard.Squares.Count;
+
+            return squareIndex % (totalSquares/4) == 0;
         }
-    }
-
-    private ISquareImageGenerator _borderChanceImageGeneratorValue;
-    private ISquareImageGenerator _borderChanceImageGenerator
-    {
-        get{
-            if (_borderChanceImageGeneratorValue == null)
-                _borderChanceImageGeneratorValue = new BorderChanceImageGenerator(_squareHeight, _squareWidth);
-            return _borderChanceImageGeneratorValue;
-        }
-    }
-
-    private ISquareImageGenerator _borderCommunityChestImageGeneratorValue;
-    private ISquareImageGenerator _borderCommunityChestImageGenerator
-    {
-        get{
-            if (_borderCommunityChestImageGeneratorValue == null)
-                _borderCommunityChestImageGeneratorValue = new BorderCommunityChestImageGenerator(_squareHeight, _squareWidth);
-            return _borderCommunityChestImageGeneratorValue;
-        }
-    }
-
-    private ISquareImageGenerator _borderElectricCompanyImageGeneratorValue;
-    private ISquareImageGenerator _borderElectricCompanyImageGenerator
-    {
-        get{
-            if (_borderElectricCompanyImageGeneratorValue == null)
-                _borderElectricCompanyImageGeneratorValue = new BorderElectricCompanyImageGenerator(_squareHeight, _squareWidth);
-            return _borderElectricCompanyImageGeneratorValue;
-        }
-    }
-
-    private ISquareImageGenerator _borderWaterWorksImageGeneratorValue;
-    private ISquareImageGenerator _borderWaterWorksImageGenerator
-    {
-        get{
-            if (_borderWaterWorksImageGeneratorValue == null)
-                _borderWaterWorksImageGeneratorValue = new BorderWaterWorksImageGenerator(_squareHeight, _squareWidth);
-            return _borderWaterWorksImageGeneratorValue;
-        }
-    }
-
-    private ISquareImageGenerator _borderIncomeTaxImageGeneratorValue;
-    private ISquareImageGenerator _borderIncomeTaxImageGenerator
-    {
-        get{
-            if (_borderIncomeTaxImageGeneratorValue == null)
-                _borderIncomeTaxImageGeneratorValue = new BorderIncomeTaxImageGenerator(_squareHeight, _squareWidth);
-            return _borderIncomeTaxImageGeneratorValue;
-        }
-    }
-
-    private ISquareImageGenerator _borderLuxuryTaxImageGeneratorValue;
-    private ISquareImageGenerator _borderLuxuryTaxImageGenerator
-    {
-        get{
-            if (_borderLuxuryTaxImageGeneratorValue == null)
-                _borderLuxuryTaxImageGeneratorValue = new BorderLuxuryTaxImageGenerator(_squareHeight, _squareWidth);
-            return _borderLuxuryTaxImageGeneratorValue;
-        }
-    }
-    
-    private ISquareImageGenerator _freeParkingImageGeneratorValue;
-    private ISquareImageGenerator _freeParkingImageGenerator
-    {
-        get{
-            if (_freeParkingImageGeneratorValue == null)
-                _freeParkingImageGeneratorValue = new FreeParkingImageGenerator(_squareHeight);
-            return _freeParkingImageGeneratorValue;
-        }
-    }
-
-    private ISquareImageGenerator _goToJailImageGeneratorValue;
-    private ISquareImageGenerator _goToJailImageGenerator
-    {
-        get{
-            if (_goToJailImageGeneratorValue == null)
-                _goToJailImageGeneratorValue = new GoToJailImageGenerator(_squareHeight);
-            return _goToJailImageGeneratorValue;
-        }
-    }
-
-    private ISquareImageGenerator _goImageGeneratorValue;
-    private ISquareImageGenerator _goImageGenerator
-    {
-        get{
-            if (_goImageGeneratorValue == null)
-                _goImageGeneratorValue = new GoImageGenerator(_squareHeight);
-            return _goImageGeneratorValue;
-        }
-    }
-
-    private ISquareImageGenerator _jailImageGeneratorValue;
-    private ISquareImageGenerator _jailImageGenerator
-    {
-        get{
-            if (_jailImageGeneratorValue == null)
-                _jailImageGeneratorValue = new JailImageGenerator(_squareHeight);
-            return _jailImageGeneratorValue;
-        }
-    }
-    
-    public SquareGameObjectGeneratorFactory(GameBoard gameBoard, float squareWidth, float squareHeight)
-    {
-        _gameBoard = gameBoard;
-        _squareWidth = squareWidth;
-        _squareHeight = squareHeight;
-    }
-
-    public SquareGameObjectGenerator GetGameObjectGenerator(Square square)
-    {
-        var imageGenerator = GetSquareImageGenerator(square);
-        var meshGenerator = GetSquareMeshGenerator(square);
-        return new SquareGameObjectGenerator(imageGenerator, meshGenerator);
-    }
-
-    private ISquareMeshGenerator GetSquareMeshGenerator(Square square)
-    {
-        return SquareIsCorner(square, _gameBoard) ? (ISquareMeshGenerator)_cornerSquareMeshGenerator : (ISquareMeshGenerator)_borderSquareMeshGenerator;
-    }
-
-    private ISquareImageGenerator GetSquareImageGenerator(Square square)
-    {
-        if (square is Property) return _borderPropertySquareImageGenerator;
-        if (square is TrainStation) return _borderTrainStationImageGenerator;
-        if (square is Chance) return _borderChanceImageGenerator;
-        if (square is CommunityChest) return _borderCommunityChestImageGenerator;
-        if (square is ElectricCompany) return _borderElectricCompanyImageGenerator;
-        if (square is WaterWorks) return _borderWaterWorksImageGenerator;
-        if (square is IncomeTax) return _borderIncomeTaxImageGenerator;
-        if (square is LuxuryTax) return _borderLuxuryTaxImageGenerator;
-        if (square is FreeParking) return _freeParkingImageGenerator;
-        if (square is GoToJail) return _goToJailImageGenerator;
-        if (square is Go) return _goImageGenerator;
-        if (square is Jail) return _jailImageGenerator;
-        if (SquareIsCorner(square, _gameBoard)) return _freeParkingImageGenerator;
-        return _borderOtherSquareImageGenerator;
-    }
-
-    private bool SquareIsCorner(Square square, GameBoard gameBoard)
-    {
-        var squareIndex = _gameBoard.GetSquareIndex(square);
-        var totalSquares = _gameBoard.Squares.Count;
-
-        if (squareIndex % (totalSquares/4) == 0)
-            return true;
-        return false;
     }
 }

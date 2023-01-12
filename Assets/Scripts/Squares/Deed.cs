@@ -1,9 +1,12 @@
-public abstract class Deed:Square
+namespace Squares
 {
-    public int Price { get; }
-    
-    public Deed(string name, int price):base(name)
+    public abstract class Deed:Square
     {
-        Price = price;
+        public int Price { get; }
+    
+        public Deed(string name, int price):base(name)
+        {
+            Price = price;
+        }
     }
 }

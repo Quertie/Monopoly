@@ -1,6 +1,9 @@
-public class FreeParking:Square
+namespace Squares
 {
-    public FreeParking(string name):base(name)
+    public class FreeParking:Square
     {
+        public FreeParking(string name):base(name)
+        {
+        }
     }
 }

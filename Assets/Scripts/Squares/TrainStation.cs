@@ -1,6 +1,9 @@
-public class TrainStation:Deed
+namespace Squares
 {
-    public TrainStation(string name, int price):base(name, price)
+    public class TrainStation:Deed
     {
+        public TrainStation(string name, int price):base(name, price)
+        {
+        }
     }
 }

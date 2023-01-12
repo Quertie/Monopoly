@@ -1,51 +1,55 @@
 using System.Drawing;
 using System.Drawing.Text;
+using Boards.Classic.Style;
 
-public abstract class CornerSquareImageGenerator : SquareImageGeneratorBase
+namespace Boards.Classic.GameBoardCreation.ImageGenerators
 {
-    public CornerSquareImageGenerator(float squareHeight):base(squareHeight, squareHeight)
+    public abstract class CornerSquareImageGenerator : SquareImageGeneratorBase
     {
-    }
-
-    protected Bitmap InitImageWithBackground()
-    {
-
-        var (height, width) = GetImageSize();
-        var bitmap = new Bitmap(width, height);
-        
-        using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
-        using (var greenBrush = new SolidBrush(MonopolyClassicTheme.LightGreen))
-        using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
+        protected CornerSquareImageGenerator(float squareHeight):base(squareHeight, squareHeight)
         {
-            gfx.FillRectangle(greenBrush, 0, 0, width, height);
-            Pen blackBorderPen = new Pen(MonopolyClassicTheme.Black, borderThickness);
-            //Offset is necessary otherwise to correct some border problems
-            gfx.DrawRectangle(blackBorderPen, -borderThickness/4, -borderThickness/4, width, height);
         }
-        return bitmap;
-    }
 
-    protected void DrawDiagonalTextToImage(Bitmap bitmap, string text, float distancePctFromTop)
-    {
-        DrawDiagonalTextToImage(bitmap, text, distancePctFromTop, MonopolyClassicTheme.CornerNameFontSize);
-    }
-
-    protected void DrawDiagonalTextToImage(Bitmap bitmap, string text, float distancePctFromTop, float fontSize)
-    {
-        var (height, width) = GetImageSize();
-        
-        using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
-        using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
+        protected Bitmap InitImageWithBackground()
         {
-            var stringFormat = new StringFormat();
-            stringFormat.Alignment = StringAlignment.Center;
-            gfx.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
 
-
-            gfx.TranslateTransform(distancePctFromTop*height, distancePctFromTop*height);
-            gfx.RotateTransform(-45);
-            gfx.DrawString(text, new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, fontSize), blackBrush, new PointF(0f, 0f), stringFormat);
+            var (height, width) = GetImageSize();
+            var bitmap = new Bitmap(width, height);
+        
+            using (var gfx = Graphics.FromImage(bitmap))
+            using (var greenBrush = new SolidBrush(MonopolyClassicTheme.LightGreen))
+            {
+                gfx.FillRectangle(greenBrush, 0, 0, width, height);
+                var blackBorderPen = new Pen(MonopolyClassicTheme.Black, BorderThickness);
+                //Offset is necessary otherwise to correct some border problems
+                gfx.DrawRectangle(blackBorderPen, -BorderThickness/4, -BorderThickness/4, width, height);
+            }
+            return bitmap;
         }
-    }
 
+        protected void DrawDiagonalTextToImage(Bitmap bitmap, string text, float distancePctFromTop)
+        {
+            DrawDiagonalTextToImage(bitmap, text, distancePctFromTop, MonopolyClassicTheme.CornerNameFontSize);
+        }
+
+        protected void DrawDiagonalTextToImage(Bitmap bitmap, string text, float distancePctFromTop, float fontSize)
+        {
+            // ReSharper disable once UnusedVariable
+            var (height, width) = GetImageSize();
+        
+            using (var gfx = Graphics.FromImage(bitmap))
+            using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
+            {
+                var stringFormat = new StringFormat();
+                stringFormat.Alignment = StringAlignment.Center;
+                gfx.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
+
+                gfx.TranslateTransform(distancePctFromTop*height, distancePctFromTop*height);
+                gfx.RotateTransform(-45);
+                gfx.DrawString(text, new Font(MonopolyClassicTheme.DeedNameFontFamily, fontSize), blackBrush, new PointF(0f, 0f), stringFormat);
+            }
+        }
+
+    }
 }

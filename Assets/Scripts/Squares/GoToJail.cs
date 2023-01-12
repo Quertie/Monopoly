@@ -1,6 +1,9 @@
-public class GoToJail:Square
+namespace Squares
 {
-    public GoToJail(string name):base(name)
+    public class GoToJail:Square
     {
+        public GoToJail(string name):base(name)
+        {
+        }
     }
 }

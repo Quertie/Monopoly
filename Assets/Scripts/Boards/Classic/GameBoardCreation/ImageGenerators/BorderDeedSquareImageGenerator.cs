@@ -1,13 +1,17 @@
 using System.Drawing;
+using Squares;
 
-public abstract class BorderDeedSquareImageGenerator:BorderSquareImageGeneratorBase
+namespace Boards.Classic.GameBoardCreation.ImageGenerators
 {
-    public BorderDeedSquareImageGenerator(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
+    public abstract class BorderDeedSquareImageGenerator:BorderSquareImageGeneratorBase
     {
-    }
+        protected BorderDeedSquareImageGenerator(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
+        {
+        }
 
-    protected void DrawPriceToImage(Bitmap bitmap, Deed deed)
-    {
-        DrawTextToBottomOfImage(bitmap, $"M{deed.Price}");
+        protected void DrawPriceToImage(Bitmap bitmap, Deed deed)
+        {
+            DrawTextToBottomOfImage(bitmap, $"M{deed.Price}");
+        }
     }
 }

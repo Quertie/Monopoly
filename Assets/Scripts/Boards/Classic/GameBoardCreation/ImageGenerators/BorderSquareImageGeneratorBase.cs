@@ -1,31 +1,33 @@
 using System.Drawing;
-using UnityEngine;
+using Boards.Classic.Style;
 
-public abstract class BorderSquareImageGeneratorBase : SquareImageGeneratorBase
+namespace Boards.Classic.GameBoardCreation.ImageGenerators
 {
-    protected BorderSquareImageGeneratorBase(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
+    public abstract class BorderSquareImageGeneratorBase : SquareImageGeneratorBase
     {
-    }
-
-    protected Bitmap InitImageWithBackground()
-    {
-        var (height, width) = GetImageSize();
-        var bitmap = new Bitmap(width, height);
-        
-        using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
-        using (var greenBrush = new SolidBrush(MonopolyClassicTheme.LightGreen))
-        using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
+        protected BorderSquareImageGeneratorBase(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
         {
-            gfx.FillRectangle(greenBrush, 0, 0, width, height);
-            Pen blackBorderPen = new Pen(MonopolyClassicTheme.Black, borderThickness);
-            //Offset is necessary otherwise to correct some border problems
-            gfx.DrawRectangle(blackBorderPen, 0, 0, width, height-borderThickness/2);
         }
-        return bitmap;
-    }
 
-    public void DrawTextToBottomOfImage(Bitmap bitmap, string text)
-    {
-        DrawTextToImage(bitmap, text, .85f, MonopolyClassicTheme.SmallFontSize);
+        protected Bitmap InitImageWithBackground()
+        {
+            var (height, width) = GetImageSize();
+            var bitmap = new Bitmap(width, height);
+        
+            using (var gfx = Graphics.FromImage(bitmap))
+            using (var greenBrush = new SolidBrush(MonopolyClassicTheme.LightGreen))
+            {
+                gfx.FillRectangle(greenBrush, 0, 0, width, height);
+                var blackBorderPen = new Pen(MonopolyClassicTheme.Black, BorderThickness);
+                //Offset is necessary otherwise to correct some border problems
+                gfx.DrawRectangle(blackBorderPen, 0, 0, width, height-BorderThickness/2);
+            }
+            return bitmap;
+        }
+
+        protected void DrawTextToBottomOfImage(Bitmap bitmap, string text)
+        {
+            DrawTextToImage(bitmap, text, .85f, MonopolyClassicTheme.SmallFontSize);
+        }
     }
 }

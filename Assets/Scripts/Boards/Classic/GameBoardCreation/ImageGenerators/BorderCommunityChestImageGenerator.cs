@@ -1,18 +1,23 @@
 using System.Drawing;
 using System.IO;
+using Boards.Classic.Style;
+using Squares;
 
-public class BorderCommunityChestImageGenerator:BorderSquareImageGeneratorBase
+namespace Boards.Classic.GameBoardCreation.ImageGenerators
 {
-    public BorderCommunityChestImageGenerator(float _squareHeight, float _squareWidth):base(_squareHeight, _squareWidth)
+    public class BorderCommunityChestImageGenerator:BorderSquareImageGeneratorBase
     {
-    }
+        public BorderCommunityChestImageGenerator(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
+        {
+        }
 
-    public override Bitmap GetImage(Square square)
-    {
-        var bitmap = InitImageWithBackground();
+        public override Bitmap GetImage(Square square)
+        {
+            var bitmap = InitImageWithBackground();
 
-        DrawTextToImage(bitmap, square.Name.ToUpper(), .08f, MonopolyClassicTheme.PropertyNameFontSize);
-        DrawImageToImage(bitmap, Path.Combine("Classic", "Images", "community-chest.png"), .1f, .45f);
-        return bitmap;
+            DrawTextToImage(bitmap, square.Name.ToUpper(), .08f, MonopolyClassicTheme.PropertyNameFontSize);
+            DrawImageToImage(bitmap, Path.Combine("Classic", "Images", "community-chest.png"), .1f, .45f);
+            return bitmap;
+        }
     }
 }

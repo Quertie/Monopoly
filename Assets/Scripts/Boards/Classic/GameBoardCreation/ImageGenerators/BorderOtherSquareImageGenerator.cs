@@ -1,12 +1,16 @@
 using System.Drawing;
+using Squares;
 
-public class BorderOtherSquareImageGenerator : BorderSquareImageGeneratorBase
+namespace Boards.Classic.GameBoardCreation.ImageGenerators
 {
-    public BorderOtherSquareImageGenerator(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
+    public class BorderOtherSquareImageGenerator : BorderSquareImageGeneratorBase
     {
-    }
-    public override Bitmap GetImage(Square square)
-    {
-        return InitImageWithBackground();
+        public BorderOtherSquareImageGenerator(float squareHeight, float squareWidth):base(squareHeight, squareWidth)
+        {
+        }
+        public override Bitmap GetImage(Square square)
+        {
+            return InitImageWithBackground();
+        }
     }
 }

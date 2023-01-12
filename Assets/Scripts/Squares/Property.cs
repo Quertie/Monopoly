@@ -1,9 +1,12 @@
-public class Property: Deed
+namespace Squares
 {
-    public ColorGroup ColorGroup;
-    public Property(string name, ColorGroup colorGroup, int price):base(name, price)
+    public class Property: Deed
     {
-        ColorGroup = colorGroup;
-        ColorGroup.AddProperty(this);
+        public ColorGroup ColorGroup;
+        public Property(string name, ColorGroup colorGroup, int price):base(name, price)
+        {
+            ColorGroup = colorGroup;
+            ColorGroup.AddProperty(this);
+        }
     }
 }

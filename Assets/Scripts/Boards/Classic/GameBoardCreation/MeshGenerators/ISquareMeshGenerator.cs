@@ -1,6 +1,9 @@
 using UnityEngine;
 
-public interface ISquareMeshGenerator
+namespace Boards.Classic.GameBoardCreation.MeshGenerators
 {
-    Mesh GetMesh();
+    public interface ISquareMeshGenerator
+    {
+        Mesh GetMesh();
+    }
 }

@@ -1,6 +1,9 @@
-public class Go:Square
+namespace Squares
 {
-    public Go(string name):base(name)
+    public class Go:Square
     {
+        public Go(string name):base(name)
+        {
+        }
     }
 }

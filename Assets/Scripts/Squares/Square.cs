@@ -1,9 +1,12 @@
-public abstract class Square
+namespace Squares
 {
-    public string Name {get;}
-
-    public Square(string name)
+    public abstract class Square
     {
-        Name = name;
+        public string Name {get;}
+
+        public Square(string name)
+        {
+            Name = name;
+        }
     }
 }

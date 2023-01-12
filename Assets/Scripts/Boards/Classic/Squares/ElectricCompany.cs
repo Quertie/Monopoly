@@ -1,6 +1,11 @@
-public class ElectricCompany:Company
+using Squares;
+
+namespace Boards.Classic.Squares
 {
-    public ElectricCompany(string name, int price):base(name, price)
+    public class ElectricCompany:Company
     {
+        public ElectricCompany(string name, int price):base(name, price)
+        {
+        }
     }
 }

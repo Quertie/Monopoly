@@ -1,16 +1,13 @@
 using System.Collections.Generic;
 using System.Drawing;
+using Squares;
 
 public class ColorGroup
 {
+    private readonly List<Property> _properties = new List<Property>();
     public Color Color {get;}
-    private List<Property> _properties = new List<Property>();
-    public List<Property> Properties {
-        get
-        {
-            return _properties;
-        }
-    }
+
+    public List<Property> Properties => _properties;
 
     public ColorGroup(Color color)
     {
@@ -19,7 +16,7 @@ public class ColorGroup
 
     public void AddProperty(Property property)
     {
-        _properties.Add(property);
+        Properties.Add(property);
     }
 
 }

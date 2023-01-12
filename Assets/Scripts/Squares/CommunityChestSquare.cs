@@ -1,6 +1,9 @@
-public class CommunityChestSquare:Square
+namespace Squares
 {
-    public CommunityChestSquare(string name):base(name)
+    public class CommunityChestSquare:Square
     {
+        public CommunityChestSquare(string name):base(name)
+        {
+        }
     }
 }
