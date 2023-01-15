@@ -12,7 +12,6 @@ namespace Boards.Classic.GameBoardCreation.ImageGenerators
 
         protected Bitmap InitImageWithBackground()
         {
-
             var (height, width) = GetImageSize();
             var bitmap = new Bitmap(width, height);
         

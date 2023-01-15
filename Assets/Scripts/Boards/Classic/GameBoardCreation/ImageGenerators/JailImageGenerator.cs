@@ -21,47 +21,49 @@ namespace Boards.Classic.GameBoardCreation.ImageGenerators
             var bitmap = InitImageWithBackground();
 
             using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
+            using (var blackBorderPen = new Pen(MonopolyClassicTheme.Black, BorderThickness))
             {
                 var jailImage = new Bitmap(Path.Combine(Application.streamingAssetsPath, "Classic", "Images", "jail.png"));
                 var imageWidth = width *3/4;
                 var imageHeight = (int)((float)jailImage.Height / jailImage.Width * imageWidth);
                 gfx.DrawImage(jailImage, 0, 0, imageWidth, imageHeight);
-
-                var blackBorderPen = new Pen(MonopolyClassicTheme.Black, BorderThickness);
                 gfx.DrawRectangle(blackBorderPen, 0, 0, imageWidth, imageHeight);
             }
 
-            var topText = String.Join(" ", square.Name.ToUpper().Split(' ').Take(1));
-            var bottomText = String.Join(" ", square.Name.ToUpper().Split(' ').Skip(1));
-            DrawDiagonalTextToImage(bitmap, topText, .12f, MonopolyClassicTheme.PropertyNameFontSize);
-            DrawDiagonalTextToImage(bitmap, bottomText, .58f, MonopolyClassicTheme.PropertyNameFontSize);
-
-            // TODO REFACTOR
-
-            using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
-            using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
-            {
-                var stringFormat = new StringFormat();
-                stringFormat.Alignment = StringAlignment.Center;
-                gfx.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-
-                gfx.TranslateTransform(height*3f/4/2, height*.8f);
-                gfx.DrawString("SIMPLE", new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, MonopolyClassicTheme.CornerNameFontSize), blackBrush, new PointF(0f, 0f), stringFormat);
-            }
-
-            using (var gfx = System.Drawing.Graphics.FromImage(bitmap))
-            using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
-            {
-                var stringFormat = new StringFormat();
-                stringFormat.Alignment = StringAlignment.Center;
-                gfx.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-
-                gfx.TranslateTransform(.8f*height, height*3f/4/2);
-                gfx.RotateTransform(-90);
-                gfx.DrawString("VISITE", new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, MonopolyClassicTheme.CornerNameFontSize), blackBrush, new PointF(0f, 0f), stringFormat);
-            }
+            DrawInJailTextToImage(square.Name, bitmap);
+            DrawJustVisitingTextToImage(bitmap, height);
 
             return bitmap;
+        }
+
+        private void DrawInJailTextToImage(string text, Bitmap bitmap)
+        {
+            var splitText = text.ToUpper().Split(' ');
+            var topText = string.Join(" ", splitText.Take(1));
+            var bottomText = string.Join(" ", splitText.Skip(1));
+            DrawDiagonalTextToImage(bitmap, topText, .12f, MonopolyClassicTheme.PropertyNameFontSize);
+            DrawDiagonalTextToImage(bitmap, bottomText, .58f, MonopolyClassicTheme.PropertyNameFontSize);
+        }
+
+        private static void DrawJustVisitingTextToImage(Image image, float height)
+        {
+            DrawTextToSideOfImage(image, "SIMPLE", height*3f/4/2, height*.8f, 0);
+            DrawTextToSideOfImage(image, "VISITE", .8f*height, height*3f/4/2, -90);
+        }
+
+        private static void DrawTextToSideOfImage(Image image, string text, float xPosition, float yPosition, float angle)
+        {
+            using (var gfx = System.Drawing.Graphics.FromImage(image))
+            using (var blackBrush = new SolidBrush(MonopolyClassicTheme.Black))
+            {
+                var stringFormat = new StringFormat();
+                stringFormat.Alignment = StringAlignment.Center;
+                gfx.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
+
+                gfx.TranslateTransform(xPosition, yPosition);
+                gfx.RotateTransform(angle);
+                gfx.DrawString(text, new System.Drawing.Font(MonopolyClassicTheme.DeedNameFontFamily, MonopolyClassicTheme.CornerNameFontSize), blackBrush, new PointF(0f, 0f), stringFormat);
+            }
         }
     }
 }

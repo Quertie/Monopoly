@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace Boards.Classic.GameBoardCreation.MeshGenerators
 {
-    public class CornerSquareMeshGenerator:ISquareMeshGenerator
+    public class SquareMeshGenerator:IMeshGenerator
     {
         private readonly float _squareHeight;
 
-        public CornerSquareMeshGenerator(float squareHeight)
+        public SquareMeshGenerator(float squareHeight)
         {
             _squareHeight = squareHeight;
         }

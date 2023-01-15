@@ -7,6 +7,8 @@ namespace Boards.Classic.Style
 {
     public static class MonopolyClassicTheme
     {
+        public const float SquareWidth = 4f;
+        public const float SquareHeight = 6.5f;
 
         public const int PropertyNameFontSize = 26;
         public const int TaxNameFontSize = 35;

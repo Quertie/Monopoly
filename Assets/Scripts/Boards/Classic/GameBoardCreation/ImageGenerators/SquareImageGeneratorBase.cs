@@ -9,8 +9,8 @@ namespace Boards.Classic.GameBoardCreation.ImageGenerators
 {
     public abstract class SquareImageGeneratorBase:ISquareImageGenerator
     {
-        private const int BiggestSide = 500;
         protected const int BorderThickness = 8;
+        private const int ScaleFactor = 77;
 
         private readonly float _squareHeight;
         private readonly float _squareWidth;
@@ -25,8 +25,7 @@ namespace Boards.Classic.GameBoardCreation.ImageGenerators
 
         protected (int height, int width) GetImageSize()
         {
-            if (_squareHeight>_squareWidth) return (BiggestSide, (int)(BiggestSide*_squareWidth/_squareHeight));
-            return ((int)(BiggestSide * _squareHeight/_squareWidth), BiggestSide);
+            return ((int)_squareHeight * ScaleFactor, (int)_squareWidth * ScaleFactor);
         }
 
         protected void DrawTextToImage(Bitmap bitmap, string text, float heightPercent, int fontSize)

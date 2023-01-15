@@ -11,12 +11,12 @@ namespace Boards.Classic.GameBoardCreation
         private readonly float _squareWidth;
         private readonly float _squareHeight;
 
-        private CornerSquareMeshGenerator _cornerSquareMeshGeneratorValue;
-        private CornerSquareMeshGenerator _cornerSquareMeshGenerator => _cornerSquareMeshGeneratorValue ??= new CornerSquareMeshGenerator(_squareHeight);
+        private SquareMeshGenerator _squareMeshGeneratorValue;
+        private SquareMeshGenerator SquareMeshGenerator => _squareMeshGeneratorValue ??= new SquareMeshGenerator(_squareHeight);
 
-        private BorderSquareMeshGenerator _borderSquareMeshGeneratorValue;
+        private BorderMeshGenerator _borderMeshGeneratorValue;
 
-        private BorderSquareMeshGenerator _borderSquareMeshGenerator => _borderSquareMeshGeneratorValue ??= new BorderSquareMeshGenerator(_squareHeight, _squareWidth);
+        private BorderMeshGenerator BorderMeshGenerator => _borderMeshGeneratorValue ??= new BorderMeshGenerator(_squareHeight, _squareWidth);
 
         private ISquareImageGenerator _borderOtherSquareImageGeneratorValue;
         private ISquareImageGenerator _borderOtherSquareImageGenerator => _borderOtherSquareImageGeneratorValue ??= new BorderOtherSquareImageGenerator(_squareHeight, _squareWidth);
@@ -71,42 +71,29 @@ namespace Boards.Classic.GameBoardCreation
             return new SquareGameObjectGenerator(imageGenerator, meshGenerator);
         }
 
-        private ISquareMeshGenerator GetSquareMeshGenerator(Square square)
+        private IMeshGenerator GetSquareMeshGenerator(Square square)
         {
-            return SquareIsCorner(square) ? _cornerSquareMeshGenerator : _borderSquareMeshGenerator;
+            return SquareIsCorner(square) ? SquareMeshGenerator : BorderMeshGenerator;
         }
 
         private ISquareImageGenerator GetSquareImageGenerator(Square square)
         {
-            switch (square)
+            return square switch
             {
-                case Property:
-                    return _borderPropertySquareImageGenerator;
-                case TrainStation:
-                    return _borderTrainStationImageGenerator;
-                case Chance:
-                    return _borderChanceImageGenerator;
-                case CommunityChest:
-                    return _borderCommunityChestImageGenerator;
-                case ElectricCompany:
-                    return _borderElectricCompanyImageGenerator;
-                case WaterWorks:
-                    return _borderWaterWorksImageGenerator;
-                case IncomeTax:
-                    return _borderIncomeTaxImageGenerator;
-                case LuxuryTax:
-                    return _borderLuxuryTaxImageGenerator;
-                case FreeParking:
-                    return _freeParkingImageGenerator;
-                case GoToJail:
-                    return _goToJailImageGenerator;
-                case Go:
-                    return _goImageGenerator;
-                case Jail:
-                    return _jailImageGenerator;
-            }
-
-            return SquareIsCorner(square) ? _freeParkingImageGenerator : _borderOtherSquareImageGenerator;
+                Property => _borderPropertySquareImageGenerator,
+                TrainStation => _borderTrainStationImageGenerator,
+                Chance => _borderChanceImageGenerator,
+                CommunityChest => _borderCommunityChestImageGenerator,
+                ElectricCompany => _borderElectricCompanyImageGenerator,
+                WaterWorks => _borderWaterWorksImageGenerator,
+                IncomeTax => _borderIncomeTaxImageGenerator,
+                LuxuryTax => _borderLuxuryTaxImageGenerator,
+                FreeParking => _freeParkingImageGenerator,
+                GoToJail => _goToJailImageGenerator,
+                Go => _goImageGenerator,
+                Jail => _jailImageGenerator,
+                _ => SquareIsCorner(square) ? _freeParkingImageGenerator : _borderOtherSquareImageGenerator
+            };
         }
 
         private bool SquareIsCorner(Square square)

@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace Boards.Classic.GameBoardCreation.MeshGenerators
 {
-    public class BorderSquareMeshGenerator:ISquareMeshGenerator
+    public class BorderMeshGenerator:IMeshGenerator
     {
         private readonly float _squareHeight;
         private readonly float _squareWidth;
 
-        public BorderSquareMeshGenerator(float squareHeight, float squareWidth)
+        public BorderMeshGenerator(float squareHeight, float squareWidth)
         {
             _squareHeight = squareHeight;
             _squareWidth = squareWidth;

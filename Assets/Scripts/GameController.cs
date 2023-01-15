@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    private const float SquareWidth = 4f;
+    private const float SquareHeight = 6.5f;
+    
     private GameBoard GameBoard {get; set;}
-
+    
     private void Start()
     {
         GameBoard = new GameBoard();
@@ -14,7 +17,7 @@ public class GameController : MonoBehaviour
 
     private void BuildBoard()
     {
-        var boardBuilder = new BoardBuilder(GameBoard, new SquareGameObjectGeneratorFactory(GameBoard, 4f, 6.5f));
+        var boardBuilder = new BoardBuilder(GameBoard, new SquareGameObjectGeneratorFactory(GameBoard, SquareWidth, SquareHeight), SquareWidth, SquareHeight);
         boardBuilder.BuildBoard();
     }
 }
