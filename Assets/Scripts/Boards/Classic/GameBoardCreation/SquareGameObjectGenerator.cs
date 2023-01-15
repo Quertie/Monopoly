@@ -16,8 +16,7 @@ namespace Boards.Classic.GameBoardCreation
             _imageGenerator = imageGenerator;
             _meshGenerator = meshGenerator;
         }
-
-
+        
         public GameObject CreateGameObject(Square square)
         {
             var squareBitmap = _imageGenerator.GetImage(square);
@@ -27,9 +26,7 @@ namespace Boards.Classic.GameBoardCreation
             squareObject.GetComponent<Renderer>().material.mainTexture = texture;
             return squareObject;
         }
-
         
-
         private GameObject CreateSquareGameObject()
         {
             var mesh = _meshGenerator.GetMesh();
