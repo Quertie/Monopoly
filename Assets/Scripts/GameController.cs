@@ -1,26 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using Boards.Classic;
+using Boards.Classic.GameBoardCreation;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    private const float SquareWidth = 4f;
+    private const float SquareHeight = 6.5f;
+    
     private GameBoard GameBoard {get; set;}
-
-    void Start()
+    
+    private void Start()
     {
         GameBoard = new GameBoard();
-        BuildBoard(GameBoard);
+        BuildBoard();
     }
 
-    public void BuildBoard(GameBoard gameBoard)
+    private void BuildBoard()
     {
-        var boardBuilder = new BoardBuilder(GameBoard, new SquareImageGenerator());
+        var boardBuilder = new BoardBuilder(GameBoard, new SquareGameObjectGeneratorFactory(GameBoard, SquareWidth, SquareHeight), SquareWidth, SquareHeight);
         boardBuilder.BuildBoard();
-    }
-
-    void Update()
-    {
-        
     }
 }
