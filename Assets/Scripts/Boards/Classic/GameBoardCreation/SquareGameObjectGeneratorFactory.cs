@@ -68,7 +68,7 @@ namespace Boards.Classic.GameBoardCreation
         {
             var imageGenerator = GetSquareImageGenerator(square);
             var meshGenerator = GetSquareMeshGenerator(square);
-            return new SquareGameObjectGenerator(imageGenerator, meshGenerator);
+            return new SquareGameObjectGenerator(imageGenerator, meshGenerator, _gameBoard);
         }
 
         private IGeometryGenerator GetSquareMeshGenerator(Square square)

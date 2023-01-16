@@ -1,3 +1,4 @@
+using System.Linq;
 using Boards.Classic;
 using Boards.Classic.GameBoardCreation;
 using UnityEngine;
@@ -13,6 +14,19 @@ public class GameController : MonoBehaviour
     {
         GameBoard = new GameBoard();
         BuildBoard();
+
+        CreatePlayerToken();
+    }
+
+    private static void CreatePlayerToken()
+    {
+        var firstSquareTokenPosition = GameObject.Find(string.Format(Constants.GameObjectNames.Square, "0"))
+            .GetComponentsInChildren<Transform>()
+            .Single(c => c.gameObject.name == Constants.GameObjectNames.TokenPosition10).transform.position;
+
+        var playerToken = Instantiate(Resources.Load("Prefabs/Tokens/Token"), firstSquareTokenPosition,
+            new Quaternion(0, 0, 0, 0));
+        playerToken.name = "Player";
     }
 
     private void BuildBoard()
