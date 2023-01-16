@@ -9,12 +9,12 @@ namespace Boards.Classic.GameBoardCreation
     public class SquareGameObjectGenerator
     {
         private readonly ISquareImageGenerator _imageGenerator;
-        private readonly IMeshGenerator _meshGenerator;
+        private readonly IGeometryGenerator _geometryGenerator;
 
-        public SquareGameObjectGenerator(ISquareImageGenerator imageGenerator, IMeshGenerator meshGenerator)
+        public SquareGameObjectGenerator(ISquareImageGenerator imageGenerator, IGeometryGenerator geometryGenerator)
         {
             _imageGenerator = imageGenerator;
-            _meshGenerator = meshGenerator;
+            _geometryGenerator = geometryGenerator;
         }
         
         public GameObject CreateGameObject(Square square)
@@ -29,9 +29,14 @@ namespace Boards.Classic.GameBoardCreation
         
         private GameObject CreateSquareGameObject()
         {
-            var mesh = _meshGenerator.GetMesh();
+            var mesh = _geometryGenerator.GetMesh();
             var gameObject = new GameObject(Constants.GameObjectNames.Square, typeof(MeshRenderer), typeof(MeshFilter), typeof(MeshCollider));
             gameObject.GetComponent<MeshFilter>().mesh = mesh;
+            
+            var tokenPositionMarker = _geometryGenerator.GetTokenPositionMarker();
+            var tokenPositionMarkerGameObject = new GameObject(Constants.GameObjectNames.TokenPosition10);
+            tokenPositionMarkerGameObject.transform.parent = gameObject.transform;
+            
             return gameObject;
         }
 

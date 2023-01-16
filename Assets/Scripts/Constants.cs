@@ -4,5 +4,7 @@ public static class Constants
     {
         public const string Board = "Board";
         public const string Square = "Square";
+        
+        public const string TokenPosition10 = "Token Position 1 - 0";
     }
 }

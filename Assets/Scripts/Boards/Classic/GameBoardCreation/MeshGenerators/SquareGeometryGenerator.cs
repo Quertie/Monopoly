@@ -2,11 +2,11 @@ using UnityEngine;
 
 namespace Boards.Classic.GameBoardCreation.MeshGenerators
 {
-    public class SquareMeshGenerator:IMeshGenerator
+    public class SquareGeometryGenerator:IGeometryGenerator
     {
         private readonly float _squareHeight;
 
-        public SquareMeshGenerator(float squareHeight)
+        public SquareGeometryGenerator(float squareHeight)
         {
             _squareHeight = squareHeight;
         }
@@ -27,6 +27,11 @@ namespace Boards.Classic.GameBoardCreation.MeshGenerators
             };
             mesh.RecalculateNormals();
             return mesh;
+        }
+
+        public Vector3 GetTokenPositionMarker()
+        {
+            return new Vector3(0, 0, 0);
         }
     }
 }

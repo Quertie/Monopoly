@@ -46,7 +46,7 @@ namespace Boards.Classic.GameBoardCreation
         {
             var centerSquareWidth = _squareWidth * (GetTotalSquares()-4)/4;
             
-            var meshGenerator = new SquareMeshGenerator(centerSquareWidth);
+            var meshGenerator = new SquareGeometryGenerator(centerSquareWidth);
             var mesh = meshGenerator.GetMesh();
             
             var imageGenerator = new CenterSquareImageGenerator(centerSquareWidth);

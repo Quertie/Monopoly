@@ -11,12 +11,12 @@ namespace Boards.Classic.GameBoardCreation
         private readonly float _squareWidth;
         private readonly float _squareHeight;
 
-        private SquareMeshGenerator _squareMeshGeneratorValue;
-        private SquareMeshGenerator SquareMeshGenerator => _squareMeshGeneratorValue ??= new SquareMeshGenerator(_squareHeight);
+        private SquareGeometryGenerator _squareGeometryGeneratorValue;
+        private SquareGeometryGenerator SquareGeometryGenerator => _squareGeometryGeneratorValue ??= new SquareGeometryGenerator(_squareHeight);
 
-        private BorderMeshGenerator _borderMeshGeneratorValue;
+        private BorderGeometryGenerator _borderGeometryGeneratorValue;
 
-        private BorderMeshGenerator BorderMeshGenerator => _borderMeshGeneratorValue ??= new BorderMeshGenerator(_squareHeight, _squareWidth);
+        private BorderGeometryGenerator BorderGeometryGenerator => _borderGeometryGeneratorValue ??= new BorderGeometryGenerator(_squareHeight, _squareWidth);
 
         private ISquareImageGenerator _borderOtherSquareImageGeneratorValue;
         private ISquareImageGenerator _borderOtherSquareImageGenerator => _borderOtherSquareImageGeneratorValue ??= new BorderOtherSquareImageGenerator(_squareHeight, _squareWidth);
@@ -71,9 +71,9 @@ namespace Boards.Classic.GameBoardCreation
             return new SquareGameObjectGenerator(imageGenerator, meshGenerator);
         }
 
-        private IMeshGenerator GetSquareMeshGenerator(Square square)
+        private IGeometryGenerator GetSquareMeshGenerator(Square square)
         {
-            return SquareIsCorner(square) ? SquareMeshGenerator : BorderMeshGenerator;
+            return SquareIsCorner(square) ? SquareGeometryGenerator : BorderGeometryGenerator;
         }
 
         private ISquareImageGenerator GetSquareImageGenerator(Square square)

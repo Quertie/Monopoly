@@ -2,12 +2,12 @@ using UnityEngine;
 
 namespace Boards.Classic.GameBoardCreation.MeshGenerators
 {
-    public class BorderMeshGenerator:IMeshGenerator
+    public class BorderGeometryGenerator:IGeometryGenerator
     {
         private readonly float _squareHeight;
         private readonly float _squareWidth;
 
-        public BorderMeshGenerator(float squareHeight, float squareWidth)
+        public BorderGeometryGenerator(float squareHeight, float squareWidth)
         {
             _squareHeight = squareHeight;
             _squareWidth = squareWidth;
@@ -29,6 +29,11 @@ namespace Boards.Classic.GameBoardCreation.MeshGenerators
             };
             mesh.RecalculateNormals();
             return mesh;
+        }
+
+        public Vector3 GetTokenPositionMarker()
+        {
+            return new Vector3(0, 0, 0);
         }
     }
 }
