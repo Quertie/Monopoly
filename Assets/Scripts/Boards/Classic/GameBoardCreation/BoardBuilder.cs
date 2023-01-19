@@ -122,7 +122,7 @@ namespace Boards.Classic.GameBoardCreation
         
         private void MoveCenterSquareToPosition(GameObject centerSquareGameObject)
         {
-            var offset = _squareHeight / 2 + 9 * _squareWidth / 2;
+            var offset = _squareHeight / 2 + (float)(GetTotalSquares()-4)/4 * _squareWidth / 2;
             centerSquareGameObject.transform.Translate(-offset, 0f, offset);
         }
     }
