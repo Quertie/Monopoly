@@ -1,6 +1,6 @@
 using System.Linq;
 using Boards.Classic;
-using Boards.Classic.GameBoardCreation;
+using Boards.Classic.GameBoardGameObjectCreation;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -8,11 +8,12 @@ public class GameController : MonoBehaviour
     private const float SquareWidth = 4f;
     private const float SquareHeight = 6.5f;
     
-    private GameBoard GameBoard {get; set;}
+    private IGameBoard GameBoard {get; set;}
     
     private void Start()
     {
-        GameBoard = new GameBoard();
+        var gameBoardProvider = new ClassicGameBoardProvider();
+        GameBoard = gameBoardProvider.GetBoard();
         BuildBoard();
 
         CreatePlayerToken();
@@ -31,7 +32,7 @@ public class GameController : MonoBehaviour
 
     private void BuildBoard()
     {
-        var boardBuilder = new BoardBuilder(GameBoard, new SquareGameObjectGeneratorFactory(GameBoard, SquareWidth, SquareHeight), SquareWidth, SquareHeight);
+        var boardBuilder = new ClassicBoardGameObjectBuilder(GameBoard, new SquareGameObjectGeneratorFactory(GameBoard, SquareWidth, SquareHeight), SquareWidth, SquareHeight);
         boardBuilder.BuildBoard();
     }
 }

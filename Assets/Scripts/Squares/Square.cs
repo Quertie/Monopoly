@@ -4,9 +4,13 @@ namespace Squares
     {
         public string Name {get;}
 
-        public Square(string name)
+        protected Square(string name)
         {
             Name = name;
         }
+        
+        // ReSharper disable once PublicConstructorInAbstractClass
+        public Square()
+        {}
     }
 }
