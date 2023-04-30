@@ -8,6 +8,9 @@ namespace Boards.Classic
 {
     public class GameBoard : IGameBoard
     {
+
+        public Square CurrentSquare { get; set; }
+
         public List<ColorGroup> ColorGroups { get; }
 
         public List<Square> Squares {get;}

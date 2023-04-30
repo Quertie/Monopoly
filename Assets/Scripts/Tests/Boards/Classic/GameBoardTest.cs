@@ -17,8 +17,6 @@ namespace Tests.Tests.Boards.Classic
             // Arrange
             var squares = GetSquares(numberOfSquaresOnBoard);
             var gameBoard = new GameBoard(squares, null);
-            var originSquare = squares[0];
-            var expectedDestinationSquare = squares[5];
             
             //Act
             var destinationIndex = gameBoard.GetLandingSquareIndex(originIndex, diceRoll);

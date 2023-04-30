@@ -1,4 +1,6 @@
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Boards.Classic;
 using Boards.Classic.GameBoardGameObjectCreation;
 using UnityEngine;
@@ -17,6 +19,18 @@ public class GameController : MonoBehaviour
         BuildBoard();
 
         CreatePlayerToken();
+        var playerTurnController =
+            new PlayerTurnController(new BasicDiceRollProvider(), new CharacterMovementController(GameBoard), GameBoard);
+        Task.Run(() =>  GameLoop(playerTurnController)).ConfigureAwait(false);
+    }
+
+    private async Task GameLoop(PlayerTurnController playerTurnController)
+    {
+        while (true)
+        {
+            await playerTurnController.ExecuteTurn();
+            Thread.Sleep(2000);
+        }
     }
 
     private static void CreatePlayerToken()
