@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Boards.Classic;
 using Boards.Classic.GameBoardGameObjectCreation;
+using Dice;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -29,7 +30,6 @@ public class GameController : MonoBehaviour
         while (true)
         {
             await playerTurnController.ExecuteTurn();
-            Thread.Sleep(2000);
         }
     }
 

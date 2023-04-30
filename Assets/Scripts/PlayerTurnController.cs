@@ -1,4 +1,5 @@
 using System.Threading.Tasks;
+using Dice;
 
 public class PlayerTurnController
 {
@@ -15,7 +16,7 @@ public class PlayerTurnController
 
     public async Task ExecuteTurn()
     {
-        var diceRoll = _diceRollProvider.GetDiceRoll();
+        var diceRoll = await _diceRollProvider.GetDiceRoll();
         var originSquare = _gameBoard.CurrentSquare;
         var destinationSquare = _gameBoard.GetLandingSquare(originSquare, diceRoll);
         await _characterMovementController.MoveToSquare(destinationSquare);

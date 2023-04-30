@@ -1,4 +1,9 @@
-public interface IDiceRollProvider
+using System.Threading.Tasks;
+
+namespace Dice
 {
-    int GetDiceRoll();
+    public interface IDiceRollProvider
+    {
+        Task<int> GetDiceRoll();
+    }
 }
