@@ -11,8 +11,13 @@
 /[Mm]emoryCaptures/
 /[Uu]serSettings/
 
-# Never ignore Asset meta data
+# All NuGet packages
+[Aa]ssets/Plugins
+
+# Never ignore Asset meta data, except for the ignored Plugins folder
 !/[Aa]ssets/**/*.meta
+[Aa]ssets/Plugins.meta
+
 
 # Uncomment this line if you wish to ignore the asset store tools plugin
 # /[Aa]ssets/AssetStoreTools*
