@@ -16,7 +16,6 @@ internal class CharacterMovementController : ICharacterMovementController
     
     public Task MoveToSquare(Square square)
     {
-        Debug.Log("Move to square " + square.Name);
         var squareIndex = _gameBoard.GetSquareIndex(square);
         var squareGameObjectName = string.Format(Constants.GameObjectNames.Square, squareIndex);
         var tokenPositionMarkerGameObjectName = Constants.GameObjectNames.TokenPosition10;
@@ -27,10 +26,10 @@ internal class CharacterMovementController : ICharacterMovementController
                 .GetComponentsInChildren<Transform>().Single(c => c.gameObject.name == tokenPositionMarkerGameObjectName).position;
             GetPlayerTokenGameObject().transform.position = destinationPosition;
         }
-        UnityMainThreadDispatcher.Instance().Enqueue(MoveAction);
+        var moveTask = UnityMainThreadDispatcher.Instance().EnqueueAsync(MoveAction);
         _gameBoard.CurrentSquare = square;
         
-        return Task.CompletedTask;
+        return moveTask;
     }
 
     private GameObject GetPlayerTokenGameObject()
