@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Boards.Classic.Squares;
@@ -19,6 +20,7 @@ namespace Boards.Classic
         {
             Squares = squares;
             ColorGroups = colorGroups;
+            CurrentSquare = squares[0];
         }
 
         public int GetSquareIndex(Square square)
@@ -35,6 +37,59 @@ namespace Boards.Classic
         public int GetLandingSquareIndex(int originIndex, int diceRoll)
         {
             return (originIndex + diceRoll) % Squares.Count;
+        }
+
+        public List<Square> GetWaypoint(Square originSquare, Square destinationSquare)
+        {
+            var originSquareIndex = GetSquareIndex(originSquare);
+            var destinationSquareIndex = GetSquareIndex(destinationSquare);
+            
+            var squareIndicesInBetween = GetSquareIndicesInBetween(originSquareIndex, destinationSquareIndex);
+            var cornerSquareIndices = GetCornerSquareIndices();
+            var cornerSquareIndicesOrderedFromCurrentSquare = OrderFromCurrentSquare(cornerSquareIndices, originSquareIndex);
+            return cornerSquareIndicesOrderedFromCurrentSquare.Where(i => squareIndicesInBetween.Contains(i))
+                                                              .Select(i => Squares[i])
+                                                              .Append(destinationSquare)
+                                                              .ToList();
+        }
+
+        public List<int> OrderFromCurrentSquare(List<int> squareIndices, int originSquareIndex)
+        {
+            while (!(CurrentIndexBetweenLastAndFirstItemInList(squareIndices, originSquareIndex)
+                   || CurrentIndexAboveLastItemInListAndZeroIsFirstItem(squareIndices, originSquareIndex)))
+                squareIndices = squareIndices.Skip(1).Append(squareIndices[0]).ToList();
+            return squareIndices;
+        }
+
+        private static bool CurrentIndexBetweenLastAndFirstItemInList(List<int> squareIndices, int originSquareIndex)
+        {
+            return squareIndices.Last() <= originSquareIndex && squareIndices[0] > originSquareIndex;
+        }
+
+        private bool CurrentIndexAboveLastItemInListAndZeroIsFirstItem(List<int> squareIndices, int originSquareIndex)
+        {
+            return squareIndices.Last() < originSquareIndex && squareIndices[0] == 0;
+        }
+        
+        private List<int> GetCornerSquareIndices()
+        {
+            return new List<int>
+            {
+                0,
+                Squares.Count / 4,
+                Squares.Count / 2,
+                3 * Squares.Count / 4
+            };
+        }
+
+        public List<int> GetSquareIndicesInBetween(int originSquareIndex, int destinationSquareIndex)
+        {
+            if (destinationSquareIndex > originSquareIndex) return Enumerable.Range(originSquareIndex+1, destinationSquareIndex-originSquareIndex-1).ToList();
+            var firstList = originSquareIndex != Squares.Count - 1
+                ? Enumerable.Range(originSquareIndex + 1, Squares.Count - originSquareIndex - 1)
+                : new List<int>();
+            var secondList = Enumerable.Range(0, destinationSquareIndex);
+            return firstList.Concat(secondList).ToList();
         }
     }
 }

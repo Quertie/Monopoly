@@ -9,4 +9,6 @@ public interface IGameBoard
 
     int GetSquareIndex(Square square);
     Square GetLandingSquare(Square originSquare, int diceRoll);
+    List<Square> GetWaypoint(Square originSquare, Square destinationSquare);
+
 }
