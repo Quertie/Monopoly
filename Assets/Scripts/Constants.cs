@@ -6,5 +6,6 @@ public static class Constants
         public const string Square = "Square {0}";
         
         public const string TokenPosition10 = "Token Position 1 - 0";
+        public const string UICanvas = "UI Canvas";
     }
 }

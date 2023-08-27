@@ -16,7 +16,17 @@ namespace Dice
         public Task<int> GetDiceRoll()
         {
             _tcs = new TaskCompletionSource<int>();
+            ActivateDiceUI();
             return _tcs.Task;
+        }
+
+        private void ActivateDiceUI()
+        {
+            UnityMainThreadDispatcher.Instance().Enqueue(() =>
+            {
+                var enabled = GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>().enabled;
+                if (!enabled) GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>().enabled = true;
+            });
         }
 
         private void SubscribeToDiceRollSelection()
@@ -27,7 +37,13 @@ namespace Dice
 
         private void HandleDiceRollSelected(int diceRoll)
         {
+            DeactivateDiceUI();
             _tcs.SetResult(diceRoll);
+        }
+
+        private void DeactivateDiceUI()
+        {
+            UnityMainThreadDispatcher.Instance().Enqueue(()=> GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>().enabled = false);
         }
     }
 }
