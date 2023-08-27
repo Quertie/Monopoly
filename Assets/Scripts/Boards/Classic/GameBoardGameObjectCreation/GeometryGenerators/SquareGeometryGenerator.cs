@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Boards.Classic.GameBoardGameObjectCreation.MeshGenerators
@@ -29,9 +31,36 @@ namespace Boards.Classic.GameBoardGameObjectCreation.MeshGenerators
             return mesh;
         }
 
-        public Vector3 GetTokenPositionMarker()
+        public List<Vector3> GetTokenPositionMarkers(int numberOfPlayersOnSquare)
         {
-            return new Vector3(0, 0, 0);
+            switch (numberOfPlayersOnSquare)
+            {
+                case 1:
+                    return new List<Vector3> { new Vector3(0, 0, 0) };
+                case 2:
+                    return new List<Vector3>
+                    {
+                        new Vector3(0, 0, -_squareHeight / 4),
+                        new Vector3(0, 0, _squareHeight / 4)
+                    };
+                case 3:
+                    return new List<Vector3>
+                    {
+                        new Vector3(0, 0, -_squareHeight / 4),
+                        new Vector3(-_squareHeight / 4, 0, _squareHeight / 4),
+                        new Vector3(_squareHeight / 4, 0, _squareHeight / 4),
+                    };
+                case 4:
+                    return new List<Vector3>
+                    {
+                        new Vector3(_squareHeight / 4, 0, -_squareHeight / 4),
+                        new Vector3(-_squareHeight / 4, 0, -_squareHeight / 4),
+                        new Vector3(-_squareHeight / 4, 0, _squareHeight / 4),
+                        new Vector3(_squareHeight / 4, 0, _squareHeight / 4)
+                    };
+                default:
+                    throw new NotImplementedException();
+            }
         }
     }
 }

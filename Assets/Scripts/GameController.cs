@@ -1,5 +1,5 @@
+using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using Boards.Classic;
 using Boards.Classic.GameBoardGameObjectCreation;
@@ -15,33 +15,48 @@ public class GameController : MonoBehaviour
     
     private void Start()
     {
-        var gameBoardProvider = new ClassicGameBoardProvider();
+        var numberOfPlayers = 4;
+        
+        var gameBoardProvider = new ClassicGameBoardProvider(numberOfPlayers);
         GameBoard = gameBoardProvider.GetBoard();
         BuildBoard();
 
-        CreatePlayerToken();
-        var playerTurnController =
-            new PlayerTurnController(new BasicDiceRollProvider(), new CharacterMovementController(GameBoard), GameBoard);
-        Task.Run(() =>  GameLoop(playerTurnController)).ConfigureAwait(false);
+        var playerTurnControllers = new List<PlayerTurnController>();
+        
+        for (var i = 0; i < numberOfPlayers; i++)
+        {
+            CreatePlayerToken(i, numberOfPlayers);
+            playerTurnControllers.Add(new PlayerTurnController(new BasicDiceRollProvider(), new CharacterMovementController(GameBoard, i)));
+        }
+        
+        Task.Run(() =>  GameLoop(playerTurnControllers)).ConfigureAwait(false);
     }
 
-    private async Task GameLoop(PlayerTurnController playerTurnController)
+    private async Task GameLoop(List<PlayerTurnController> playerTurnControllers)
     {
         while (true)
         {
-            await playerTurnController.ExecuteTurn();
+            foreach (var playerTurnController in playerTurnControllers)
+            {
+                await playerTurnController.ExecuteTurn();
+            }
         }
     }
 
-    private static void CreatePlayerToken()
+    private static string CreatePlayerToken(int playerNumber, int numberOfPlayers)
     {
         var firstSquareTokenPosition = GameObject.Find(string.Format(Constants.GameObjectNames.Square, "0"))
             .GetComponentsInChildren<Transform>()
-            .Single(c => c.gameObject.name == Constants.GameObjectNames.TokenPosition10).transform.position;
+            .Single(c =>
+            {
+                var tokenPosition10 = string.Format(Constants.GameObjectNames.TokenPosition, numberOfPlayers, playerNumber);
+                return c.gameObject.name == tokenPosition10;
+            }).transform.position;
 
         var playerToken = Instantiate(Resources.Load("Prefabs/Tokens/Token"), firstSquareTokenPosition,
             new Quaternion(0, 0, 0, 0));
-        playerToken.name = "Player";
+        playerToken.name = $"Player {playerNumber}";
+        return playerToken.name;
     }
 
     private void BuildBoard()

@@ -18,7 +18,7 @@ namespace Tests.Tests.Boards.Classic
         {
             // Arrange
             var squares = GetSquares(numberOfSquaresOnBoard);
-            var gameBoard = new GameBoard(squares, null);
+            var gameBoard = new GameBoard(squares, null, 1);
 
             //Act
             var destinationIndex = gameBoard.GetLandingSquareIndex(originIndex, diceRoll);
@@ -44,7 +44,7 @@ namespace Tests.Tests.Boards.Classic
         {
             // Arrange
             var squares = GetSquares(8);
-            var gameBoard = new GameBoard(squares, null);
+            var gameBoard = new GameBoard(squares, null, 1);
 
             // Act
             var squaresInBetween = gameBoard.GetSquareIndicesInBetween(originSquareIndex, destinationSquareIndex);
@@ -67,7 +67,7 @@ namespace Tests.Tests.Boards.Classic
         {
             // Arrange
             var squares = GetSquares(8);
-            var gameBoard = new GameBoard(squares, null);
+            var gameBoard = new GameBoard(squares, null, 1);
             
             // Act
             var orderedSquaresFromCurrent = gameBoard.OrderFromCurrentSquare(squareIndexList, currentSquareIndex);

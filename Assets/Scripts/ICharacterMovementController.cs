@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
-using Squares;
 
 public interface ICharacterMovementController
 {
-    Task MoveToSquare(Square square);
+    Task MoveSquares(int numberOfSquares);
 }

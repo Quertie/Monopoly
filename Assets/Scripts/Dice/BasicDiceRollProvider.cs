@@ -6,16 +6,12 @@ namespace Dice
     public class BasicDiceRollProvider : IDiceRollProvider
     {
 
-        public BasicDiceRollProvider()
-        {
-            UnityMainThreadDispatcher.Instance().Enqueue(SubscribeToDiceRollSelection);
-        }
-
         private TaskCompletionSource<int> _tcs;
 
         public Task<int> GetDiceRoll()
         {
             _tcs = new TaskCompletionSource<int>();
+            UnityMainThreadDispatcher.Instance().Enqueue(SubscribeToDiceRollSelection);
             ActivateDiceUI();
             return _tcs.Task;
         }
@@ -38,7 +34,14 @@ namespace Dice
         private void HandleDiceRollSelected(int diceRoll)
         {
             DeactivateDiceUI();
+            UnityMainThreadDispatcher.Instance().Enqueue(RemoveDiceRollSelectionHandler);
             _tcs.SetResult(diceRoll);
+        }
+        
+        private void RemoveDiceRollSelectionHandler()
+        {
+            var diceRollPanel = GameObject.Find("Dice Roll Provider");
+            diceRollPanel.GetComponent<UIDiceRollProviderPanel>().DiceRolled -= HandleDiceRollSelected;
         }
 
         private void DeactivateDiceUI()

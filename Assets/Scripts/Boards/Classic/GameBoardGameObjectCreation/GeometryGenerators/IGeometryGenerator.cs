@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Boards.Classic.GameBoardGameObjectCreation.MeshGenerators
@@ -5,6 +6,6 @@ namespace Boards.Classic.GameBoardGameObjectCreation.MeshGenerators
     public interface IGeometryGenerator
     {
         Mesh GetMesh();
-        Vector3 GetTokenPositionMarker();
+        List<Vector3> GetTokenPositionMarkers(int numberOfPlayersOnSquare);
     }
 }

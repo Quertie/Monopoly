@@ -10,17 +10,23 @@ namespace Boards.Classic
     public class GameBoard : IGameBoard
     {
 
-        public Square CurrentSquare { get; set; }
+        public List<Square> CurrentSquare { get; set; }
 
         public List<ColorGroup> ColorGroups { get; }
 
         public List<Square> Squares {get;}
 
-        public GameBoard(List<Square> squares, List<ColorGroup> colorGroups)
+        private int _numberOfPlayers;
+
+        public GameBoard(List<Square> squares, List<ColorGroup> colorGroups, int numberOfPlayers)
         {
             Squares = squares;
             ColorGroups = colorGroups;
-            CurrentSquare = squares[0];
+            CurrentSquare = new List<Square>();
+            for (var i = 0; i < numberOfPlayers; i++)
+            {
+                CurrentSquare.Add(squares[0]);
+            }
         }
 
         public int GetSquareIndex(Square square)
