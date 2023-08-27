@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Squares;
@@ -10,9 +9,6 @@ internal class CharacterMovementController : ICharacterMovementController
     private readonly IGameBoard _gameBoard;
     private bool _coroutineFinished;
     private TaskCompletionSource<bool> _coroutineFinishedTaskCompletionSource = new TaskCompletionSource<bool>();
-    
-    
-    private static readonly TaskCompletionSource<bool> TaskCompletionSource = new TaskCompletionSource<bool>();
 
     public CharacterMovementController(IGameBoard gameBoard)
     {
@@ -21,9 +17,7 @@ internal class CharacterMovementController : ICharacterMovementController
 
     public async Task MoveToSquare(Square square)
     {
-        Debug.Log($"About to start moving to square {square.Name}");
         var waypoint = _gameBoard.GetWaypoint(_gameBoard.CurrentSquare, square);
-        Debug.Log($"Found waypoint with squares {string.Join(", ", waypoint.Select(s => s.Name))}");
         foreach (Square step in waypoint)
         {
             var squareIndex = _gameBoard.GetSquareIndex(step);                                      
@@ -34,9 +28,7 @@ internal class CharacterMovementController : ICharacterMovementController
             _coroutineFinishedTaskCompletionSource = new TaskCompletionSource<bool>();
             await UnityMainThreadDispatcher.Instance().EnqueueAsync(dispatcher =>
                 MoveAction(dispatcher, tokenPositionMarkerGameObjectName, squareGameObjectName));
-            Debug.Log($"Enqueued move task to destination {step.Name}");
             await _coroutineFinishedTaskCompletionSource.Task;
-            Debug.Log("Step complete");
         }
 
         _gameBoard.CurrentSquare = square;
@@ -48,7 +40,6 @@ internal class CharacterMovementController : ICharacterMovementController
         var destinationPosition = destinationSquareTransform
             .GetComponentsInChildren<Transform>().Single(c => c.gameObject.name == positionMarkerGameObjectName).position;
         dispatcher.StartCoroutine(ProgressivelyMoveTowards(destinationPosition, 5f));
-        Debug.Log($"Started move coroutine to destination {destinationSquareGameObjectName}");
     }
 
     private IEnumerator ProgressivelyMoveTowards(Vector3 destinationPosition, float speed)
