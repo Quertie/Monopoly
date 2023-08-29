@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,6 +11,10 @@ internal class CharacterMovementController : ICharacterMovementController
     private bool _coroutineFinished;
     private TaskCompletionSource<bool> _coroutineFinishedTaskCompletionSource = new TaskCompletionSource<bool>();
     private readonly int _playerNumber;
+    
+    private Square CurrentSquare => _gameBoard.CurrentSquare[_playerNumber];
+
+    public event EventHandler PlayerMovesOneSquare; 
 
     public CharacterMovementController(IGameBoard gameBoard, int playerNumber)
     {
@@ -17,38 +22,51 @@ internal class CharacterMovementController : ICharacterMovementController
         _playerNumber = playerNumber;
     }
 
+    public async Task UpdatePosition()
+    {
+        await MoveToSquare(CurrentSquare);
+    }
+
+
     public async Task MoveSquares(int numberOfSquares)
     {
         var originSquare = _gameBoard.CurrentSquare[_playerNumber];
         var destinationSquare = _gameBoard.GetLandingSquare(originSquare, numberOfSquares);
-        await MoveToSquare(destinationSquare);
+        await MoveWithWaypointToSquare(destinationSquare);
     }
     
-    private async Task MoveToSquare(Square square)
+    private async Task MoveWithWaypointToSquare(Square square)
     {
         var waypoint = _gameBoard.GetWaypoint(_gameBoard.CurrentSquare[_playerNumber], square);
         foreach (Square step in waypoint)
         {
-            var squareIndex = _gameBoard.GetSquareIndex(step);                                      
-            var squareGameObjectName = string.Format(Constants.GameObjectNames.Square, squareIndex);   
-            
-            var tokenPositionMarkerGameObjectName = GetDestinationTokenPositionMarkerName(step);
-
-            _coroutineFinishedTaskCompletionSource = new TaskCompletionSource<bool>();
-            await UnityMainThreadDispatcher.Instance().EnqueueAsync(dispatcher =>
-                MoveAction(dispatcher, tokenPositionMarkerGameObjectName, squareGameObjectName));
-            await _coroutineFinishedTaskCompletionSource.Task;
+            _gameBoard.CurrentSquare[_playerNumber] = step;
+            PlayerMovesOneSquare?.Invoke(this, EventArgs.Empty);
+            await MoveToSquare(step);
         }
-        _gameBoard.CurrentSquare[_playerNumber] = square;
+    }
+
+    private async Task MoveToSquare(Square square)
+    {
+        var squareIndex = _gameBoard.GetSquareIndex(square);
+        var squareGameObjectName = string.Format(Constants.GameObjectNames.Square, squareIndex);
+
+        var tokenPositionMarkerGameObjectName = GetDestinationTokenPositionMarkerName(square);
+
+        _coroutineFinishedTaskCompletionSource = new TaskCompletionSource<bool>();
+        await UnityMainThreadDispatcher.Instance().EnqueueAsync(dispatcher =>
+            MoveAction(dispatcher, tokenPositionMarkerGameObjectName, squareGameObjectName));
+        await _coroutineFinishedTaskCompletionSource.Task;
     }
 
     private string GetDestinationTokenPositionMarkerName(Square destinationSquare)
     {
-        var numberOfPlayersOnLandingSquareIncludingCurrent =
-            _gameBoard.CurrentSquare.Count(somePlayerCurrentSquare => somePlayerCurrentSquare.Name == destinationSquare.Name) + 1;
-        
-        return string.Format(Constants.GameObjectNames.TokenPosition, numberOfPlayersOnLandingSquareIncludingCurrent,
-            numberOfPlayersOnLandingSquareIncludingCurrent - 1);
+        var playersOnLandingSquareIncludingCurrent =
+            _gameBoard.CurrentSquare.Select((square, index) => square.Name == destinationSquare.Name ? index : -1).Where(i => i >= 0).ToList();
+
+        var positionOnSquare = playersOnLandingSquareIncludingCurrent.IndexOf(_playerNumber);
+
+        return string.Format(Constants.GameObjectNames.TokenPosition, playersOnLandingSquareIncludingCurrent.Count(), positionOnSquare);
     }
 
     private void MoveAction(MonoBehaviour dispatcher, string positionMarkerGameObjectName, string destinationSquareGameObjectName)
