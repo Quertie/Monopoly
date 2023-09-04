@@ -21,13 +21,13 @@ public class GameController : MonoBehaviour
         var gameBoardProvider = new ClassicGameBoardProvider(numberOfPlayers);
         GameBoard = gameBoardProvider.GetBoard();
         BuildBoard();
-        var playerMovementObserver = new PlayerMovementObserver();
+        var playerMovementObserver = new CharacterMovementObserver();
         var playerTurnControllers = GetPlayerTurnControllers(numberOfPlayers, playerMovementObserver);
         
         Task.Run(() => GameLoop(playerTurnControllers)).ConfigureAwait(false);
     }
 
-    private List<PlayerTurnController> GetPlayerTurnControllers(int numberOfPlayers, PlayerMovementObserver playerMovementObserver)
+    private List<PlayerTurnController> GetPlayerTurnControllers(int numberOfPlayers, CharacterMovementObserver characterMovementObserver)
     {
         var playerTurnControllers = new List<PlayerTurnController>();
 
@@ -37,8 +37,8 @@ public class GameController : MonoBehaviour
             CreatePlayerToken(playerIndex, numberOfPlayers);
             var characterMovementController = new CharacterMovementController(GameBoard, playerIndex);
             
-            playerMovementObserver.AddSource(characterMovementController);
-            playerMovementObserver.Subscribe(characterMovementController);
+            characterMovementObserver.AddSource(characterMovementController);
+            characterMovementObserver.Subscribe(characterMovementController);
             
             playerTurnControllers.Add(new PlayerTurnController(new BasicDiceRollProvider(), characterMovementController));
         }

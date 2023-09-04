@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Movement
 {
-    internal class PlayerMovementObserver
+    internal class CharacterMovementObserver
     {
         private readonly List<ICharacterMovementSubscriber> _subscribers = new List<ICharacterMovementSubscriber>();
 
