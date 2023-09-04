@@ -1,10 +1,10 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Boards.Classic;
 using Boards.Classic.GameBoardGameObjectCreation;
 using Dice;
+using Movement;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -14,8 +14,6 @@ public class GameController : MonoBehaviour
     
     private IGameBoard GameBoard {get; set;}
 
-    private event EventHandler PlayerMovesOneSquare;
-
     private void Start()
     {
         var numberOfPlayers = 4;
@@ -23,12 +21,13 @@ public class GameController : MonoBehaviour
         var gameBoardProvider = new ClassicGameBoardProvider(numberOfPlayers);
         GameBoard = gameBoardProvider.GetBoard();
         BuildBoard();
-        var playerTurnControllers = GetPlayerTurnControllers(numberOfPlayers);
+        var playerMovementObserver = new PlayerMovementObserver();
+        var playerTurnControllers = GetPlayerTurnControllers(numberOfPlayers, playerMovementObserver);
         
         Task.Run(() => GameLoop(playerTurnControllers)).ConfigureAwait(false);
     }
 
-    private List<PlayerTurnController> GetPlayerTurnControllers(int numberOfPlayers)
+    private List<PlayerTurnController> GetPlayerTurnControllers(int numberOfPlayers, PlayerMovementObserver playerMovementObserver)
     {
         var playerTurnControllers = new List<PlayerTurnController>();
 
@@ -37,22 +36,14 @@ public class GameController : MonoBehaviour
             var playerIndex = i;
             CreatePlayerToken(playerIndex, numberOfPlayers);
             var characterMovementController = new CharacterMovementController(GameBoard, playerIndex);
-            characterMovementController.PlayerMovesOneSquare += HandlePlayerMovesOneSquare;
-            PlayerMovesOneSquare += (sender, e) =>
-                {
-                    if ((ICharacterMovementController)sender != characterMovementController)
-                        Task.Run(() => characterMovementController.UpdatePosition()).ConfigureAwait(false);
-                }
-            ;
+            
+            playerMovementObserver.AddSource(characterMovementController);
+            playerMovementObserver.Subscribe(characterMovementController);
+            
             playerTurnControllers.Add(new PlayerTurnController(new BasicDiceRollProvider(), characterMovementController));
         }
 
         return playerTurnControllers;
-    }
-
-    private void HandlePlayerMovesOneSquare(object sender, EventArgs eventArgs)
-    {
-        PlayerMovesOneSquare?.Invoke(sender, eventArgs);
     }
 
     private async Task GameLoop(List<PlayerTurnController> playerTurnControllers)
