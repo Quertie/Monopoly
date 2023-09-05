@@ -27,6 +27,12 @@ public class GameController : MonoBehaviour
         Task.Run(() => GameLoop(playerTurnControllers)).ConfigureAwait(false);
     }
 
+    private GameObject BuildBoard(IGameBoard gameBoard)
+    {
+        var boardBuilder = new ClassicBoardGameObjectBuilder(gameBoard, new SquareGameObjectGeneratorFactory(gameBoard, SquareWidth, SquareHeight), SquareWidth, SquareHeight);
+        return boardBuilder.BuildBoard();
+    }
+    
     private List<PlayerTurnController> GetPlayerTurnControllers(IGameBoard gameBoard,
                                                                 int numberOfPlayers,
                                                                 CharacterMovementObserver characterMovementObserver,
@@ -59,11 +65,5 @@ public class GameController : MonoBehaviour
                 await playerTurnController.ExecuteTurn();
             }
         }
-    }
-
-    private GameObject BuildBoard(IGameBoard gameBoard)
-    {
-        var boardBuilder = new ClassicBoardGameObjectBuilder(gameBoard, new SquareGameObjectGeneratorFactory(gameBoard, SquareWidth, SquareHeight), SquareWidth, SquareHeight);
-        return boardBuilder.BuildBoard();
     }
 }

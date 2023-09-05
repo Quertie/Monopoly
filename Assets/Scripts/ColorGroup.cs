@@ -4,7 +4,7 @@ using Squares;
 
 public class ColorGroup
 {
-    private readonly List<Property> _properties = new List<Property>();
+    private readonly List<Property> _properties = new();
     public Color Color {get;}
 
     public List<Property> Properties => _properties;

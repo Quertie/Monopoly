@@ -45,7 +45,7 @@ namespace Movement
         private async Task MoveWithWaypointToSquare(Square square)
         {
             var waypoint = _gameBoard.GetWaypoint(_gameBoard.CurrentSquare[_playerNumber], square);
-            foreach (Square step in waypoint)
+            foreach (var step in waypoint)
             {
                 _gameBoard.CurrentSquare[_playerNumber] = step;
                 PlayerMovesOneSquare?.Invoke(this, EventArgs.Empty);
