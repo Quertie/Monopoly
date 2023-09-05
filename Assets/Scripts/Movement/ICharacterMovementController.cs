@@ -5,9 +5,7 @@ namespace Movement
 {
     public interface ICharacterMovementController
     {
-        public delegate void PlayerMovesOneSquareHandler(int playerNumber);
-        public event EventHandler PlayerMovesOneSquare; 
-        Task UpdatePosition();
+        public event EventHandler PlayerMovesOneSquare;
         Task MoveSquares(int numberOfSquares);
     }
 }
