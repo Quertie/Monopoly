@@ -18,11 +18,11 @@ public class GameController : MonoBehaviour
 
         var gameBoardProvider = new ClassicGameBoardProvider(numberOfPlayers);
         var gameBoard = gameBoardProvider.GetBoard();
-        BuildBoard(gameBoard);
+        var boardGameObject = BuildBoard(gameBoard);
         
         var playerMovementObserver = new CharacterMovementObserver();
         var playerTokenProvider = new PlayerTokenProvider();
-        var playerTurnControllers = GetPlayerTurnControllers(gameBoard, numberOfPlayers, playerMovementObserver, playerTokenProvider);
+        var playerTurnControllers = GetPlayerTurnControllers(gameBoard, numberOfPlayers, playerMovementObserver, playerTokenProvider, boardGameObject);
         
         Task.Run(() => GameLoop(playerTurnControllers)).ConfigureAwait(false);
     }
@@ -30,7 +30,8 @@ public class GameController : MonoBehaviour
     private List<PlayerTurnController> GetPlayerTurnControllers(IGameBoard gameBoard,
                                                                 int numberOfPlayers,
                                                                 CharacterMovementObserver characterMovementObserver,
-                                                                IPlayerTokenProvider playerTokenProvider)
+                                                                IPlayerTokenProvider playerTokenProvider,
+                                                                GameObject boardGameObject)
     {
         var playerTurnControllers = new List<PlayerTurnController>();
 
@@ -38,7 +39,7 @@ public class GameController : MonoBehaviour
         {
             var playerIndex = i;
             var tokenGameObject = playerTokenProvider.CreatePlayerToken(playerIndex, numberOfPlayers);
-            var characterMovementController = new CharacterMovementController(gameBoard, playerIndex, tokenGameObject);
+            var characterMovementController = new CharacterMovementController(gameBoard, playerIndex, tokenGameObject, boardGameObject);
             
             characterMovementObserver.AddSource(characterMovementController);
             characterMovementObserver.Subscribe(characterMovementController);
@@ -60,9 +61,9 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void BuildBoard(IGameBoard gameBoard)
+    private GameObject BuildBoard(IGameBoard gameBoard)
     {
         var boardBuilder = new ClassicBoardGameObjectBuilder(gameBoard, new SquareGameObjectGeneratorFactory(gameBoard, SquareWidth, SquareHeight), SquareWidth, SquareHeight);
-        boardBuilder.BuildBoard();
+        return boardBuilder.BuildBoard();
     }
 }

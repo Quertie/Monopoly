@@ -15,19 +15,21 @@ namespace Movement
         private TaskCompletionSource<bool> _coroutineFinishedTaskCompletionSource = new TaskCompletionSource<bool>();
         private readonly int _playerNumber;
         private readonly GameObject _playerGameObject;
+        private readonly GameObject _boardGameObject;
 
         private Square CurrentSquare => _gameBoard.CurrentSquare[_playerNumber];
 
         public event EventHandler PlayerMovesOneSquare; 
 
-        public CharacterMovementController(IGameBoard gameBoard, int playerNumber, GameObject tokenGameObject)
+        public CharacterMovementController(IGameBoard gameBoard, int playerNumber, GameObject tokenGameObject, GameObject boardGameObject)
         {
             _gameBoard = gameBoard;
             _playerNumber = playerNumber;
             _playerGameObject = tokenGameObject;
+            _boardGameObject = boardGameObject;
         }
 
-        public async Task UpdatePosition()
+        private async Task UpdatePosition()
         {
             await MoveToSquare(CurrentSquare);
         }
@@ -76,7 +78,7 @@ namespace Movement
 
         private void MoveAction(MonoBehaviour dispatcher, string positionMarkerGameObjectName, string destinationSquareGameObjectName)
         {
-            var destinationSquareTransform = GetGameBoardGameObject().GetComponentsInChildren<Transform>().Single(c => c.gameObject.name == destinationSquareGameObjectName);
+            var destinationSquareTransform = _boardGameObject.GetComponentsInChildren<Transform>().Single(c => c.gameObject.name == destinationSquareGameObjectName);
             var destinationPosition = destinationSquareTransform
                 .GetComponentsInChildren<Transform>().Single(c => c.gameObject.name == positionMarkerGameObjectName).position;
             dispatcher.StartCoroutine(ProgressivelyMoveTowards(destinationPosition, 5f));
@@ -101,11 +103,6 @@ namespace Movement
         private static bool IsPlayerPositionAlmostDestination(Vector3 destinationPosition, Vector3 playerPosition)
         {
             return Vector3.Magnitude(playerPosition - destinationPosition) < .1;
-        }
-
-        private GameObject GetGameBoardGameObject()
-        {
-            return GameObject.Find(Constants.GameObjectNames.Board);
         }
 
         public void HandleCharacterMovement()

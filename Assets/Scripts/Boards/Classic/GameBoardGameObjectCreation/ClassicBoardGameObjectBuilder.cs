@@ -23,7 +23,7 @@ namespace Boards.Classic.GameBoardGameObjectCreation
             _squareHeight = squareHeight;
         }
 
-        public void BuildBoard()
+        public GameObject BuildBoard()
         {
             var boardGameObject = new GameObject(Constants.GameObjectNames.Board);
             
@@ -40,6 +40,7 @@ namespace Boards.Classic.GameBoardGameObjectCreation
             var centerSquareGameObject = GetCenterSquareGameObject();
             MoveCenterSquareToPosition(centerSquareGameObject);
             centerSquareGameObject.transform.parent = boardGameObject.transform;
+            return boardGameObject;
         }
 
         private GameObject GetCenterSquareGameObject()
