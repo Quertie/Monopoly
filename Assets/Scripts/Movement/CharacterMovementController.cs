@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Squares;
 using UnityEngine;
+using Helpers;
 
 namespace Movement
 {
@@ -56,7 +57,7 @@ namespace Movement
             var tokenPositionMarkerGameObjectName = GetDestinationTokenPositionMarkerName(square);
 
             _coroutineFinishedTaskCompletionSource = new TaskCompletionSource<bool>();
-            await UnityMainThreadDispatcher.Instance().EnqueueAsync(dispatcher =>
+            MainThreadDispatcherHelper.EnqueueAsync(dispatcher =>
                 MoveAction(dispatcher, tokenPositionMarkerGameObjectName, squareGameObjectName));
             await _coroutineFinishedTaskCompletionSource.Task;
         }
