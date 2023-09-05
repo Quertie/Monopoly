@@ -14,15 +14,17 @@ namespace Movement
         private bool _coroutineFinished;
         private TaskCompletionSource<bool> _coroutineFinishedTaskCompletionSource = new TaskCompletionSource<bool>();
         private readonly int _playerNumber;
-    
+        private readonly GameObject _playerGameObject;
+
         private Square CurrentSquare => _gameBoard.CurrentSquare[_playerNumber];
 
         public event EventHandler PlayerMovesOneSquare; 
 
-        public CharacterMovementController(IGameBoard gameBoard, int playerNumber)
+        public CharacterMovementController(IGameBoard gameBoard, int playerNumber, GameObject tokenGameObject)
         {
             _gameBoard = gameBoard;
             _playerNumber = playerNumber;
+            _playerGameObject = tokenGameObject;
         }
 
         public async Task UpdatePosition()
@@ -82,15 +84,14 @@ namespace Movement
 
         private IEnumerator ProgressivelyMoveTowards(Vector3 destinationPosition, float speed)
         {
-            var playerPosition = GetPlayerTokenGameObject().transform.position;
+            var playerPosition = _playerGameObject.transform.position;
             while (playerPosition != destinationPosition)
             {
                 playerPosition = IsPlayerPositionAlmostDestination(destinationPosition, playerPosition)
                     ? destinationPosition
                     : Vector3.MoveTowards(playerPosition, destinationPosition, speed * Time.deltaTime);
             
-                var playerGameObject = GetPlayerTokenGameObject();
-                playerGameObject.transform.position = playerPosition;
+                _playerGameObject.transform.position = playerPosition;
                 yield return null;
             }
             _coroutineFinishedTaskCompletionSource.SetResult(true);
@@ -102,12 +103,6 @@ namespace Movement
             return Vector3.Magnitude(playerPosition - destinationPosition) < .1;
         }
 
-        private GameObject GetPlayerTokenGameObject()
-        {
-            // TODO extract this to Constants
-            return GameObject.Find($"Player {_playerNumber}");
-        }
-    
         private GameObject GetGameBoardGameObject()
         {
             return GameObject.Find(Constants.GameObjectNames.Board);
