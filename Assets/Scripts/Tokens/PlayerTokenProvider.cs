@@ -15,7 +15,7 @@ namespace Tokens
                     return c.gameObject.name == tokenPosition10;
                 }).transform.position;
 
-            var playerToken = Object.Instantiate(Resources.Load("Prefabs/Tokens/Token"), firstSquareTokenPosition,
+            var playerToken = Object.Instantiate(Resources.Load($"Prefabs/Tokens/Token {playerNumber}"), firstSquareTokenPosition,
                 new Quaternion(0, 0, 0, 0));
             playerToken.name = string.Format(Constants.GameObjectNames.PlayerToken, playerNumber);
             return (GameObject)playerToken;
