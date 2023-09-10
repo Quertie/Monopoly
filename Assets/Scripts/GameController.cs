@@ -1,52 +1,71 @@
-using System.Linq;
-using System.Threading;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Boards.Classic;
 using Boards.Classic.GameBoardGameObjectCreation;
 using Dice;
+using Movement;
+using Tokens;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
     private const float SquareWidth = 4f;
     private const float SquareHeight = 6.5f;
-    
-    private IGameBoard GameBoard {get; set;}
-    
+
     private void Start()
     {
-        var gameBoardProvider = new ClassicGameBoardProvider();
-        GameBoard = gameBoardProvider.GetBoard();
-        BuildBoard();
+        var numberOfPlayers = 4;
 
-        CreatePlayerToken();
-        var playerTurnController =
-            new PlayerTurnController(new BasicDiceRollProvider(), new CharacterMovementController(GameBoard), GameBoard);
-        Task.Run(() =>  GameLoop(playerTurnController)).ConfigureAwait(false);
+        var gameBoardProvider = new ClassicGameBoardProvider(numberOfPlayers);
+        var gameBoard = gameBoardProvider.GetBoard();
+        var boardGameObject = BuildBoard(gameBoard);
+        
+        var playerMovementObserver = new CharacterMovementObserver();
+        var playerTokenProvider = new PlayerTokenProvider();
+        var playerTurnControllers = GetPlayerTurnControllers(gameBoard, numberOfPlayers, playerMovementObserver, playerTokenProvider, boardGameObject);
+        
+        Task.Run(() => GameLoop(playerTurnControllers)).ConfigureAwait(false);
     }
 
-    private async Task GameLoop(PlayerTurnController playerTurnController)
+    private GameObject BuildBoard(IGameBoard gameBoard)
+    {
+        var boardBuilder = new ClassicBoardGameObjectBuilder(gameBoard, new SquareGameObjectGeneratorFactory(gameBoard, SquareWidth, SquareHeight), SquareWidth, SquareHeight);
+        return boardBuilder.BuildBoard();
+    }
+    
+    private List<PlayerTurnController> GetPlayerTurnControllers(IGameBoard gameBoard,
+                                                                int numberOfPlayers,
+                                                                CharacterMovementObserver characterMovementObserver,
+                                                                IPlayerTokenProvider playerTokenProvider,
+                                                                GameObject boardGameObject)
+    {
+        var initialTokenPositionHelper = new InitialTokenPositionHelper(numberOfPlayers, boardGameObject);
+        
+        var playerTurnControllers = new List<PlayerTurnController>();
+
+        for (var i = 0; i < numberOfPlayers; i++)
+        {
+            var playerIndex = i;
+            var tokenGameObject = playerTokenProvider.CreatePlayerToken(playerIndex, initialTokenPositionHelper);
+            var characterMovementController = new CharacterMovementController(gameBoard, playerIndex, tokenGameObject, boardGameObject);
+            
+            characterMovementObserver.AddSource(characterMovementController);
+            characterMovementObserver.Subscribe(characterMovementController);
+            
+            playerTurnControllers.Add(new PlayerTurnController(new BasicDiceRollProvider(), characterMovementController));
+        }
+
+        return playerTurnControllers;
+    }
+
+    private async Task GameLoop(List<PlayerTurnController> playerTurnControllers)
     {
         while (true)
         {
-            await playerTurnController.ExecuteTurn();
+            foreach (var playerTurnController in playerTurnControllers)
+            {
+                await playerTurnController.ExecuteTurn();
+            }
         }
-    }
-
-    private static void CreatePlayerToken()
-    {
-        var firstSquareTokenPosition = GameObject.Find(string.Format(Constants.GameObjectNames.Square, "0"))
-            .GetComponentsInChildren<Transform>()
-            .Single(c => c.gameObject.name == Constants.GameObjectNames.TokenPosition10).transform.position;
-
-        var playerToken = Instantiate(Resources.Load("Prefabs/Tokens/Token"), firstSquareTokenPosition,
-            new Quaternion(0, 0, 0, 0));
-        playerToken.name = "Player";
-    }
-
-    private void BuildBoard()
-    {
-        var boardBuilder = new ClassicBoardGameObjectBuilder(GameBoard, new SquareGameObjectGeneratorFactory(GameBoard, SquareWidth, SquareHeight), SquareWidth, SquareHeight);
-        boardBuilder.BuildBoard();
     }
 }

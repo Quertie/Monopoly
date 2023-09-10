@@ -1,5 +1,5 @@
+using Boards.Classic.GameBoardGameObjectCreation.GeometryGenerators;
 using Boards.Classic.GameBoardGameObjectCreation.ImageGenerators;
-using Boards.Classic.GameBoardGameObjectCreation.MeshGenerators;
 using Boards.Classic.Squares;
 using Squares;
 

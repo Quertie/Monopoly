@@ -18,7 +18,7 @@ namespace Tests.Tests.Boards.Classic
         {
             // Arrange
             var squares = GetSquares(numberOfSquaresOnBoard);
-            var gameBoard = new GameBoard(squares, null);
+            var gameBoard = new GameBoard(squares, null, 1);
 
             //Act
             var destinationIndex = gameBoard.GetLandingSquareIndex(originIndex, diceRoll);
@@ -37,51 +37,5 @@ namespace Tests.Tests.Boards.Classic
 
             return squares;
         }
-
-        [TestCaseSource(nameof(GetSquareIndicesInBetweenTestCaseSource))]
-        public void GetSquareIndicesInBetween_WorksCorrectly(int originSquareIndex, int destinationSquareIndex,
-            int[] expectedSquaresInBetween)
-        {
-            // Arrange
-            var squares = GetSquares(8);
-            var gameBoard = new GameBoard(squares, null);
-
-            // Act
-            var squaresInBetween = gameBoard.GetSquareIndicesInBetween(originSquareIndex, destinationSquareIndex);
-
-            // Assert
-            Assert.That(squaresInBetween.SequenceEqual(expectedSquaresInBetween));
-        }
-
-        public static object[] GetSquareIndicesInBetweenTestCaseSource =
-        {
-            new object[] { 1, 7, new[] { 2, 3, 4, 5, 6 } },
-            new object[] { 5, 3, new[] { 6, 7, 0, 1, 2 } },
-            new object[] { 5, 0, new[] { 6, 7 } },
-            new object[] { 0, 5, new[] { 1, 2, 3, 4 } }
-        };
-
-        [TestCaseSource(nameof(OrderFromCurrentSquareTestCaseSource))]
-        public void OrderFromCurrentSquare_WorksCorrectly(int currentSquareIndex, List<int> squareIndexList,
-            List<int> expectedOrderedSquareListFromCurrent)
-        {
-            // Arrange
-            var squares = GetSquares(8);
-            var gameBoard = new GameBoard(squares, null);
-            
-            // Act
-            var orderedSquaresFromCurrent = gameBoard.OrderFromCurrentSquare(squareIndexList, currentSquareIndex);
-
-            // Assert
-            Assert.That(orderedSquaresFromCurrent.SequenceEqual(expectedOrderedSquareListFromCurrent));
-        }
-
-        public static object[] OrderFromCurrentSquareTestCaseSource =
-        {
-            new object[] { 5, new List<int> { 6, 0, 2, 4 }, new List<int> { 6, 0, 2, 4 } },
-            new object[] { 5, new List<int> { 0, 2, 4, 6 }, new List<int> { 6, 0, 2, 4 } },
-            new object[] { 4, new List<int> { 4, 6, 0, 2 }, new List<int> { 6, 0, 2, 4 } },
-            new object[] { 7, new List<int> { 0, 2, 4, 6 }, new List<int> { 0, 2, 4, 6 } }
-        };
     }
 }

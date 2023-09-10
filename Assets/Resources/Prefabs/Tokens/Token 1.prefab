@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -5754084199372789682}
   - component: {fileID: -7511558181221131132}
   m_Layer: 0
-  m_Name: Token
+  m_Name: Token 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: 7227d9f47b3e9dbfebe3969151fe1d4c, type: 3}
+  - {fileID: 2100000, guid: 20caa6ba23a3bd1f8be8069c6de7bb4a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -147,6 +147,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 494557519684a86d68999db5def8a6e7, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 20caa6ba23a3bd1f8be8069c6de7bb4a, type: 2}
     - target: {fileID: 919132149155446097, guid: 494557519684a86d68999db5def8a6e7, type: 3}
       propertyPath: m_Name
       value: default token

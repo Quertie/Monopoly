@@ -5,17 +5,14 @@ namespace Dice
 {
     public class BasicDiceRollProvider : IDiceRollProvider
     {
-
-        public BasicDiceRollProvider()
-        {
-            UnityMainThreadDispatcher.Instance().Enqueue(SubscribeToDiceRollSelection);
-        }
-
         private TaskCompletionSource<int> _tcs;
+        private GameObject _diceRollPanel;
+        private Canvas _uiCanvas;
 
         public Task<int> GetDiceRoll()
         {
             _tcs = new TaskCompletionSource<int>();
+            UnityMainThreadDispatcher.Instance().Enqueue(SubscribeToDiceRollSelection);
             ActivateDiceUI();
             return _tcs.Task;
         }
@@ -24,26 +21,43 @@ namespace Dice
         {
             UnityMainThreadDispatcher.Instance().Enqueue(() =>
             {
-                var enabled = GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>().enabled;
-                if (!enabled) GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>().enabled = true;
+                var uiCanvas = GetUiCanvas();
+                var enabled = uiCanvas.enabled;
+                if (!enabled) uiCanvas.enabled = true;
             });
+        }
+
+        private Canvas GetUiCanvas()
+        {
+            return _uiCanvas ??= GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>();
         }
 
         private void SubscribeToDiceRollSelection()
         {
-            var diceRollPanel = GameObject.Find("Dice Roll Provider");
+            var diceRollPanel = GetDiceRollPanel();
             diceRollPanel.GetComponent<UIDiceRollProviderPanel>().DiceRolled += HandleDiceRollSelected;
+        }
+
+        private GameObject GetDiceRollPanel()
+        {
+            return _diceRollPanel ??= GameObject.Find(Constants.GameObjectNames.DiceRollProvider);
         }
 
         private void HandleDiceRollSelected(int diceRoll)
         {
             DeactivateDiceUI();
+            UnityMainThreadDispatcher.Instance().Enqueue(RemoveDiceRollSelectionHandler);
             _tcs.SetResult(diceRoll);
+        }
+        
+        private void RemoveDiceRollSelectionHandler()
+        {
+            GetDiceRollPanel().GetComponent<UIDiceRollProviderPanel>().DiceRolled -= HandleDiceRollSelected;
         }
 
         private void DeactivateDiceUI()
         {
-            UnityMainThreadDispatcher.Instance().Enqueue(()=> GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>().enabled = false);
+            UnityMainThreadDispatcher.Instance().Enqueue(()=> GetUiCanvas().enabled = false);
         }
     }
 }

@@ -18,10 +18,12 @@ namespace Boards.Classic
 
         private readonly List<ColorGroup> _colorGroups;
         
-         private List<Square> _squares;
+         private readonly List<Square> _squares;
+         private readonly int _numberOfPlayers;
 
-         public ClassicGameBoardProvider()
+         public ClassicGameBoardProvider(int numberOfPlayers)
          {
+             _numberOfPlayers = numberOfPlayers;
              _colorGroups = new List<ColorGroup>() { _brownColorGroup, _lightBlueColorGroup, _violetColorGroup, _orangeColorGroup, _redColorGroup, _yellowColorGroup, _greenColorGroup, _darkBlueColorGroup };
              _squares = new List<Square> {
                 new Go("Départ"),
@@ -69,7 +71,7 @@ namespace Boards.Classic
 
          public IGameBoard GetBoard()
          {
-             return new GameBoard(_squares, _colorGroups);
+             return new GameBoard(_squares, _colorGroups, _numberOfPlayers);
          }
     }
 }

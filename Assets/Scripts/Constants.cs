@@ -4,8 +4,15 @@ public static class Constants
     {
         public const string Board = "Board";
         public const string Square = "Square {0}";
+        public const string PlayerToken = "Player {0}";
         
-        public const string TokenPosition10 = "Token Position 1 - 0";
+        public const string TokenPosition = "Token Position {0} - {1}";
         public const string UICanvas = "UI Canvas";
+        public const string DiceRollProvider = "Dice Roll Provider";
+    }
+
+    public static class Prefabs
+    {
+        public const string Token = "Prefabs/Tokens/Token {0}";
     }
 }

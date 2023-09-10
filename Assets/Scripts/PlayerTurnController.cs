@@ -1,24 +1,21 @@
 using System.Threading.Tasks;
 using Dice;
+using Movement;
 
 public class PlayerTurnController
 {
     private readonly IDiceRollProvider _diceRollProvider;
     private readonly ICharacterMovementController _characterMovementController;
-    private readonly IGameBoard _gameBoard;
     
-    public PlayerTurnController(IDiceRollProvider diceRollProvider, ICharacterMovementController characterMovementController, IGameBoard gameBoard)
+    public PlayerTurnController(IDiceRollProvider diceRollProvider, ICharacterMovementController characterMovementController)
     {
         _diceRollProvider = diceRollProvider;
         _characterMovementController = characterMovementController;
-        _gameBoard = gameBoard;
     }
 
     public async Task ExecuteTurn()
     {
         var diceRoll = await _diceRollProvider.GetDiceRoll();
-        var originSquare = _gameBoard.CurrentSquare;
-        var destinationSquare = _gameBoard.GetLandingSquare(originSquare, diceRoll);
-        await _characterMovementController.MoveToSquare(destinationSquare);
+        await _characterMovementController.MoveSquares(diceRoll);
     }
 }
