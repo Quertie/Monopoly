@@ -5,9 +5,9 @@ namespace Dice
 {
     public class BasicDiceRollProvider : IDiceRollProvider
     {
-
         private TaskCompletionSource<int> _tcs;
         private GameObject _diceRollPanel;
+        private Canvas _uiCanvas;
 
         public Task<int> GetDiceRoll()
         {
@@ -21,14 +21,20 @@ namespace Dice
         {
             UnityMainThreadDispatcher.Instance().Enqueue(() =>
             {
-                var enabled = GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>().enabled;
-                if (!enabled) GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>().enabled = true;
+                var uiCanvas = GetUiCanvas();
+                var enabled = uiCanvas.enabled;
+                if (!enabled) uiCanvas.enabled = true;
             });
+        }
+
+        private Canvas GetUiCanvas()
+        {
+            return _uiCanvas ??= GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>();
         }
 
         private void SubscribeToDiceRollSelection()
         {
-            var diceRollPanel = _diceRollPanel ??= GameObject.Find("Dice Roll Provider");
+            var diceRollPanel = _diceRollPanel ??= GameObject.Find(Constants.GameObjectNames.DiceRollProvider);
             diceRollPanel.GetComponent<UIDiceRollProviderPanel>().DiceRolled += HandleDiceRollSelected;
         }
 
@@ -46,7 +52,7 @@ namespace Dice
 
         private void DeactivateDiceUI()
         {
-            UnityMainThreadDispatcher.Instance().Enqueue(()=> GameObject.Find(Constants.GameObjectNames.UICanvas).GetComponent<Canvas>().enabled = false);
+            UnityMainThreadDispatcher.Instance().Enqueue(()=> GetUiCanvas().enabled = false);
         }
     }
 }

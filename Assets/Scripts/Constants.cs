@@ -8,5 +8,6 @@ public static class Constants
         
         public const string TokenPosition = "Token Position {0} - {1}";
         public const string UICanvas = "UI Canvas";
+        public const string DiceRollProvider = "Dice Roll Provider";
     }
 }
