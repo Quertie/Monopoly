@@ -39,12 +39,14 @@ public class GameController : MonoBehaviour
                                                                 IPlayerTokenProvider playerTokenProvider,
                                                                 GameObject boardGameObject)
     {
+        var initialTokenPositionHelper = new InitialTokenPositionHelper(numberOfPlayers, boardGameObject);
+        
         var playerTurnControllers = new List<PlayerTurnController>();
 
         for (var i = 0; i < numberOfPlayers; i++)
         {
             var playerIndex = i;
-            var tokenGameObject = playerTokenProvider.CreatePlayerToken(playerIndex, numberOfPlayers);
+            var tokenGameObject = playerTokenProvider.CreatePlayerToken(playerIndex, initialTokenPositionHelper);
             var characterMovementController = new CharacterMovementController(gameBoard, playerIndex, tokenGameObject, boardGameObject);
             
             characterMovementObserver.AddSource(characterMovementController);

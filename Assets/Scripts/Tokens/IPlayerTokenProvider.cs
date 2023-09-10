@@ -4,6 +4,6 @@ namespace Tokens
 {
     public interface IPlayerTokenProvider
     {
-        GameObject CreatePlayerToken(int playerNumber, int numberOfPlayers);
+        GameObject CreatePlayerToken(int playerNumber, InitialTokenPositionHelper initialTokenPositionHelper);
     }
 }

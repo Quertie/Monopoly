@@ -69,7 +69,7 @@ namespace Movement
         private string GetDestinationTokenPositionMarkerName(Square destinationSquare)
         {
             var playersOnLandingSquareIncludingCurrent =
-                _gameBoard.CurrentSquare.Select((square, index) => square.Name == destinationSquare.Name ? index : -1).Where(i => i >= 0).ToList();
+                _gameBoard.CurrentSquare.Select((square, index) => square == destinationSquare ? index : -1).Where(i => i >= 0).ToList();
 
             var positionOnSquare = playersOnLandingSquareIncludingCurrent.IndexOf(_playerNumber);
 
