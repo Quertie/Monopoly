@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Boards.Classic.GameBoardGameObjectCreation.MeshGenerators
+namespace Boards.Classic.GameBoardGameObjectCreation.GeometryGenerators
 {
     public interface IGeometryGenerator
     {

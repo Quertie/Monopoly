@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
-using System.Data.Common;
-using System.Diagnostics.Eventing.Reader;
 using UnityEngine;
 
-namespace Boards.Classic.GameBoardGameObjectCreation.MeshGenerators
+namespace Boards.Classic.GameBoardGameObjectCreation.GeometryGenerators
 {
     public class BorderGeometryGenerator:IGeometryGenerator
     {

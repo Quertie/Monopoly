@@ -8,10 +8,16 @@ namespace Tokens
         {
             var firstSquareTokenPosition = initialTokenPositionHelper.GetFirstSquareTokenPosition(playerNumber);
 
-            var playerToken = Object.Instantiate(Resources.Load($"Prefabs/Tokens/Token {playerNumber}"), firstSquareTokenPosition,
-                new Quaternion(0, 0, 0, 0));
+            var playerToken = Object.Instantiate(Resources.Load(GetTokenPrefabName(playerNumber)),
+                                                       firstSquareTokenPosition,
+                                                        new Quaternion(0, 0, 0, 0));
             playerToken.name = string.Format(Constants.GameObjectNames.PlayerToken, playerNumber);
             return (GameObject)playerToken;
+        }
+
+        private static string GetTokenPrefabName(int playerNumber)
+        {
+            return string.Format(Constants.Prefabs.Token, playerNumber);
         }
     }
 }

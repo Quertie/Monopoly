@@ -1,6 +1,6 @@
 using System.Collections.Generic;
+using Boards.Classic.GameBoardGameObjectCreation.GeometryGenerators;
 using Boards.Classic.GameBoardGameObjectCreation.ImageGenerators;
-using Boards.Classic.GameBoardGameObjectCreation.MeshGenerators;
 using Helpers;
 using Squares;
 using UnityEngine;

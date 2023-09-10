@@ -11,8 +11,7 @@ namespace Movement
     internal class CharacterMovementController : ICharacterMovementController, ICharacterMovementSubscriber
     {
         private readonly IGameBoard _gameBoard;
-        private bool _coroutineFinished;
-        private TaskCompletionSource<bool> _coroutineFinishedTaskCompletionSource = new TaskCompletionSource<bool>();
+        private TaskCompletionSource<bool> _coroutineFinishedTaskCompletionSource;
         private readonly int _playerNumber;
         private readonly GameObject _playerGameObject;
         private readonly GameObject _boardGameObject;

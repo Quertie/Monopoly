@@ -34,8 +34,13 @@ namespace Dice
 
         private void SubscribeToDiceRollSelection()
         {
-            var diceRollPanel = _diceRollPanel ??= GameObject.Find(Constants.GameObjectNames.DiceRollProvider);
+            var diceRollPanel = GetDiceRollPanel();
             diceRollPanel.GetComponent<UIDiceRollProviderPanel>().DiceRolled += HandleDiceRollSelected;
+        }
+
+        private GameObject GetDiceRollPanel()
+        {
+            return _diceRollPanel ??= GameObject.Find(Constants.GameObjectNames.DiceRollProvider);
         }
 
         private void HandleDiceRollSelected(int diceRoll)
@@ -47,7 +52,7 @@ namespace Dice
         
         private void RemoveDiceRollSelectionHandler()
         {
-            _diceRollPanel.GetComponent<UIDiceRollProviderPanel>().DiceRolled -= HandleDiceRollSelected;
+            GetDiceRollPanel().GetComponent<UIDiceRollProviderPanel>().DiceRolled -= HandleDiceRollSelected;
         }
 
         private void DeactivateDiceUI()
