@@ -7,6 +7,7 @@ namespace Dice
     {
 
         private TaskCompletionSource<int> _tcs;
+        private GameObject _diceRollPanel;
 
         public Task<int> GetDiceRoll()
         {
@@ -27,7 +28,7 @@ namespace Dice
 
         private void SubscribeToDiceRollSelection()
         {
-            var diceRollPanel = GameObject.Find("Dice Roll Provider");
+            var diceRollPanel = _diceRollPanel ??= GameObject.Find("Dice Roll Provider");
             diceRollPanel.GetComponent<UIDiceRollProviderPanel>().DiceRolled += HandleDiceRollSelected;
         }
 
@@ -40,8 +41,7 @@ namespace Dice
         
         private void RemoveDiceRollSelectionHandler()
         {
-            var diceRollPanel = GameObject.Find("Dice Roll Provider");
-            diceRollPanel.GetComponent<UIDiceRollProviderPanel>().DiceRolled -= HandleDiceRollSelected;
+            _diceRollPanel.GetComponent<UIDiceRollProviderPanel>().DiceRolled -= HandleDiceRollSelected;
         }
 
         private void DeactivateDiceUI()
