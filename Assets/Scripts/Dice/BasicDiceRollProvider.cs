@@ -58,6 +58,7 @@ namespace Dice
         private void DeactivateDiceUI()
         {
             UnityMainThreadDispatcher.Instance().Enqueue(()=> GetUiCanvas().enabled = false);
+            //UnityMainThreadDispatcher.Instance().Enqueue(()=> GetUiCanvas().enabled = false);
         }
     }
 }
