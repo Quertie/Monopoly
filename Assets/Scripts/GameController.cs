@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Boards.Classic;
 using Boards.Classic.GameBoardGameObjectCreation;
 using Dice;
+using Dice.PhysicalDiceRoll;
 using Movement;
 using Tokens;
 using UnityEngine;
@@ -51,8 +52,9 @@ public class GameController : MonoBehaviour
             
             characterMovementObserver.AddSource(characterMovementController);
             characterMovementObserver.Subscribe(characterMovementController);
-            
-            playerTurnControllers.Add(new PlayerTurnController(new BasicDiceRollProvider(), characterMovementController));
+
+            var diceRollProvider = GameObject.Find("PhysicalDiceRollProviderUI").GetComponent<PhysicalDiceRollProviderPanel>();
+            playerTurnControllers.Add(new PlayerTurnController(diceRollProvider, characterMovementController));
         }
 
         return playerTurnControllers;
