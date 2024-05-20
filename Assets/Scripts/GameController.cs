@@ -53,7 +53,7 @@ public class GameController : MonoBehaviour
             characterMovementObserver.AddSource(characterMovementController);
             characterMovementObserver.Subscribe(characterMovementController);
 
-            var diceRollProvider = GameObject.Find("PhysicalDiceRollProvider").GetComponent<PhysicalDiceRollProvider>();
+            var diceRollProvider = GameObject.Find("PhysicalDiceRollProviderUI").GetComponent<PhysicalDiceRollProviderPanel>();
             playerTurnControllers.Add(new PlayerTurnController(diceRollProvider, characterMovementController));
         }
 
